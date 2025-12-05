@@ -1,0 +1,28 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model ytmusic_info {
+  video_id              String                  @id(map: "pk_ytmusic_info") @db.VarChar(50)
+  track_name            String                  @db.VarChar(255)
+  album_id              String                  @db.VarChar(50)
+  album_name            String                  @db.VarChar(255)
+  release_year          Int?
+  tags                  Json?                   @default("[]")
+  lyrics                String?
+  ytmusic_track_artists ytmusic_track_artists[]
+}
+
+model ytmusic_track_artists {
+  video_id     String       @db.VarChar(50)
+  artist_id    String       @db.VarChar(50)
+  artist_name  String       @db.VarChar(255)
+  ytmusic_info ytmusic_info @relation(fields: [video_id], references: [video_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_ytmusic_track_artists_video_id")
+
+  @@id([video_id, artist_id], map: "pk_ytmusic_track_artists")
+}

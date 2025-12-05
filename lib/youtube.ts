@@ -10,8 +10,6 @@ const getYoutubeClient = async () => {
   }
 
   const newClient = await Innertube.create({
-    lang: "zh-TW", // 設定回傳語言
-    location: "TW", // 設定地區
     retrieve_player: false, // 如果不需要解密影片串流(只查資料)，設為 false 可以加速初始化
   });
 

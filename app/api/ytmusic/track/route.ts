@@ -20,8 +20,8 @@ export async function GET(request: NextRequest) {
     const currentItem = upNextTab.contents[0] as any;
 
     const responseData = {
-      id: basic.id,
-      title: basic.title,
+      video_id: basic.id,
+      track_name: basic.title,
       artists: currentItem?.artists?.map((artist: any) => ({
         id: artist.channel_id,
         name: artist.name,

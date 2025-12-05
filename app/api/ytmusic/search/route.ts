@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextRequest, NextResponse } from "next/server";
 
+import { SearchDataType } from "@/types/ytmusic.types";
+
 import getYoutubeClient from "@/lib/youtube";
 
 export async function GET(request: NextRequest) {
@@ -21,10 +23,10 @@ export async function GET(request: NextRequest) {
       return NextResponse.json([]);
     }
 
-    const responseData = shelf.contents.slice(0, 5).map((song: any) => {
+    const responseData: SearchDataType[] = shelf.contents.slice(0, 10).map((song: any) => {
       return {
-        id: song.id,
-        title: song.title,
+        video_id: song.id,
+        track_name: song.title,
         artists:
           song.artists?.map((artist: any) => ({
             id: artist.channel_id,
