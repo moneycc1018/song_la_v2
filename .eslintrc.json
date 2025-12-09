@@ -4,11 +4,11 @@
   "parserOptions": {
     "project": "./tsconfig.json"
   },
-  "plugins": ["@typescript-eslint", "tailwindcss"],
+  "plugins": ["@typescript-eslint", "better-tailwindcss"],
   "extends": [
     "next/core-web-vitals",
     "plugin:@typescript-eslint/recommended",
-    "plugin:tailwindcss/recommended",
+    "plugin:better-tailwindcss/recommended",
     "prettier"
   ],
   "ignorePatterns": ["node_modules/", ".next/", "out/", "*.mjs"],
@@ -18,11 +18,16 @@
     "@typescript-eslint/no-explicit-any": "warn", // 對 any 型別警告改為警告等級
 
     // tailwindcss plugin 規則調整
-    "tailwindcss/no-unnecessary-arbitrary-value": "off", // 關閉不必要 arbitrary value 警告
-    "tailwindcss/classnames-order": "off", // 關閉 class 名稱排序檢查
-    "tailwindcss/no-custom-classname": "off", // 關閉禁止自訂 class 名稱檢查
+    "better-tailwindcss/no-unnecessary-arbitrary-value": "off", // 關閉不必要 arbitrary value 警告
+    "better-tailwindcss/classnames-order": "off", // 關閉 class 名稱排序檢查
+    "better-tailwindcss/no-custom-classname": "off", // 關閉禁止自訂 class 名稱檢查
 
     // react hooks 規則調整
     "react-hooks/exhaustive-deps": "warn" // 對 React Hooks effect 依賴警告改為警告等級
+  },
+  "settings": {
+    "better-tailwindcss": {
+      "entryPoint": "styles/globals.css"
+    }
   }
 }

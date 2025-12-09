@@ -1,7 +1,7 @@
 import { ThemeSwitch } from "../theme-switch";
-import Navbar from "./navbar";
+import { Navbar } from "./navbar";
 
-export default function Header() {
+function Header() {
   return (
     <header className="bg-background text-foreground sticky inset-x-0 top-0 z-10 flex h-16 w-full items-center justify-center">
       <div className="flex w-full max-w-5xl items-center justify-between px-2">
@@ -14,3 +14,5 @@ export default function Header() {
     </header>
   );
 }
+
+export { Header };

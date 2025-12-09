@@ -15,6 +15,8 @@ model ytmusic_info {
   release_year          Int?
   tags                  Json?                   @default("[]")
   lyrics                String?
+  created_at            DateTime                @default(now()) @db.Timestamp(6)
+  updated_at            DateTime                @default(now()) @db.Timestamp(6)
   ytmusic_track_artists ytmusic_track_artists[]
 }
 

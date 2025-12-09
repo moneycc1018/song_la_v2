@@ -4,7 +4,7 @@ const globalForYoutube = global as unknown as {
   youtubeClient: Innertube | undefined;
 };
 
-const getYoutubeClient = async () => {
+export async function getYoutubeClient() {
   if (globalForYoutube.youtubeClient) {
     return globalForYoutube.youtubeClient;
   }
@@ -18,6 +18,4 @@ const getYoutubeClient = async () => {
   }
 
   return newClient;
-};
-
-export default getYoutubeClient;
+}

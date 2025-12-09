@@ -9,6 +9,13 @@ export interface SearchDataType {
     id: string;
     name: string;
   };
-  duration: number;
-  thumbnail: string;
+  duration?: number;
+  thumbnail?: string;
+  release_year?: number;
+  lyrics?: string;
+}
+
+export interface Artist {
+  id: string;
+  name: string;
 }

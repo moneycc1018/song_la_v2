@@ -1,10 +1,12 @@
 import Link from "next/link";
 
-export default function Navbar() {
+function Navbar() {
   return (
-    <nav className="flex items-center gap-4">
+    <nav className="flex items-center gap-4 font-medium">
       <Link href="/">Playground</Link>
       <Link href="/action">Action</Link>
     </nav>
   );
 }
+
+export { Navbar };

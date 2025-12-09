@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import getYoutubeClient from "@/lib/youtube";
+import { getYoutubeClient } from "@/lib/youtube";
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
