@@ -4,7 +4,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { SearchDataType } from "@/types/ytmusic.type";
 
 interface DataTableProps {
-  data: SearchDataType[];
+  data: SearchDataType[] | undefined;
   selectedTracks: SearchDataType[];
   setSelectedTracks: React.Dispatch<React.SetStateAction<SearchDataType[]>>;
 }
@@ -12,11 +12,16 @@ interface DataTableProps {
 // 歌曲列表
 function DataTable(props: DataTableProps) {
   const { data, selectedTracks, setSelectedTracks } = props;
+
+  if (!data) return null;
+
   const isAllSelected =
     data.length > 0 && data.every((track) => selectedTracks.some((selected) => selected.video_id === track.video_id));
 
   // 選取全部歌曲
   function handleSelectAll() {
+    if (!data) return;
+
     if (isAllSelected) {
       setSelectedTracks([]);
     } else {

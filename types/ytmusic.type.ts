@@ -15,6 +15,10 @@ export interface SearchDataType {
   lyrics?: string;
 }
 
+export interface TrackData extends SearchDataType {
+  tags?: string[];
+}
+
 export interface Artist {
   id: string;
   name: string;

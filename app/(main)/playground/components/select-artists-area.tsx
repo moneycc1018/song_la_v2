@@ -63,7 +63,7 @@ function SelectArtistsArea(props: SelectArtistsAreaProps) {
       <CardHeader>
         <CardTitle>Select Artists</CardTitle>
       </CardHeader>
-      <CardContent className="flex flex-col gap-2">
+      <CardContent className="flex flex-col gap-1">
         <div className="bg-background border-foreground flex w-full items-center gap-2 rounded-md border">
           <Input
             className="border-0 focus-visible:ring-0"
@@ -75,14 +75,14 @@ function SelectArtistsArea(props: SelectArtistsAreaProps) {
             onBlur={() => setOpen(false)}
           />
           <button className="hover:text-destructive mr-2" onClick={() => setInputValue("")}>
-            <XIcon />
+            <XIcon size={20} />
           </button>
         </div>
         <div className="relative">
           {availableArtists.length > 0 && (
             <div
               className={cn(
-                "border-foreground bg-background absolute z-10 h-[180px] w-full overflow-hidden rounded-md border select-none",
+                "border-foreground bg-background absolute z-10 max-h-[180px] w-full overflow-hidden rounded-md border select-none",
                 open ? "block" : "hidden",
               )}
             >
@@ -107,13 +107,10 @@ function SelectArtistsArea(props: SelectArtistsAreaProps) {
         </div>
         <div className="flex flex-wrap gap-2">
           {selectedArtists.map((artist) => (
-            <Badge key={artist.id} variant="secondary" className="gap-1 pr-1">
+            <Badge key={artist.id} className="gap-2 py-1 pr-2 pl-3">
               {artist.name}
-              <button
-                className="ring-offset-background focus:ring-ring ml-1 rounded-full outline-none focus:ring-2 focus:ring-offset-2"
-                onClick={() => handleRemove(artist.id)}
-              >
-                <XIcon className="text-muted-foreground hover:text-foreground h-3 w-3" />
+              <button className="rounded-full outline-none" onClick={() => handleRemove(artist.id)}>
+                <XIcon size={16} className="text-primary-foreground hover:text-destructive" />
               </button>
             </Badge>
           ))}

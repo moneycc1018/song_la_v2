@@ -1,12 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { SearchDataType } from "@/types/ytmusic.type";
+import { TrackData } from "@/types/ytmusic.type";
 
 import { prisma } from "@/lib/prisma";
-
-// Extended interface to include DB-specific fields
-export interface TrackData extends SearchDataType {
-  tags?: string[];
-}
 
 // Input types for CRUD
 export type CreateTrackInput = TrackData;
@@ -149,6 +144,26 @@ export async function deleteTracks(videoIds: string[]) {
       },
     },
   });
+}
+
+// 根據歌手 ID 列表查詢歌曲
+export async function getTracksByArtists(artistIds: string[]) {
+  const tracks = await prisma.ytmusic_info.findMany({
+    where: {
+      ytmusic_track_artists: {
+        some: {
+          artist_id: {
+            in: artistIds,
+          },
+        },
+      },
+    },
+    include: {
+      ytmusic_track_artists: true,
+    },
+  });
+
+  return tracks.map(mapDbToTrackData);
 }
 
 // 查詢歌手

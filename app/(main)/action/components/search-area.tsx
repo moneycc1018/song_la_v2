@@ -33,7 +33,7 @@ function SearchArea() {
     isLoading,
     isError,
     error,
-    data: queryResult = [],
+    data: queryResult,
     refetch,
   } = useQuery<SearchDataType[]>({
     queryKey: [`search-${searchType}`, searchValue],
@@ -50,7 +50,7 @@ function SearchArea() {
 
       return result;
     },
-    enabled: searchValue !== "",
+    enabled: searchValue !== "" || searchType === "db",
   });
 
   return (
@@ -96,7 +96,9 @@ function SearchArea() {
       {isError && <p>{error?.message}</p>}
       {
         <>
-          <DataTable data={queryResult} selectedTracks={selectedTracks} setSelectedTracks={setSelectedTracks} />
+          {queryResult && (
+            <DataTable data={queryResult} selectedTracks={selectedTracks} setSelectedTracks={setSelectedTracks} />
+          )}
           {selectedTracks.length > 0 && searchType === "yt" && (
             <div className="flex justify-end">
               <AddTracksButton selectedTracks={selectedTracks} onSuccess={() => setSelectedTracks([])} />

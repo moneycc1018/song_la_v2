@@ -1,5 +1,5 @@
-import { GameArea } from "./components/game-area";
+import { PlaygroundArea } from "./components/playground-area";
 
 export default function PlaygroundPage() {
-  return <GameArea />;
+  return <PlaygroundArea />;
 }
