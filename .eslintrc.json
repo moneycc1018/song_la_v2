@@ -17,10 +17,9 @@
     "@typescript-eslint/no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }], // 允許未使用但以 _ 開頭的函式參數不警告
     "@typescript-eslint/no-explicit-any": "warn", // 對 any 型別警告改為警告等級
 
-    // tailwindcss plugin 規則調整
-    "better-tailwindcss/no-unnecessary-arbitrary-value": "off", // 關閉不必要 arbitrary value 警告
-    "better-tailwindcss/classnames-order": "off", // 關閉 class 名稱排序檢查
-    "better-tailwindcss/no-custom-classname": "off", // 關閉禁止自訂 class 名稱檢查
+    // better-tailwindcss 規則調整
+    "better-tailwindcss/enforce-consistent-line-wrapping": "off",
+    "better-tailwindcss/enforce-consistent-class-order": "off", // 關閉 class 名稱排序檢查
 
     // react hooks 規則調整
     "react-hooks/exhaustive-deps": "warn" // 對 React Hooks effect 依賴警告改為警告等級
