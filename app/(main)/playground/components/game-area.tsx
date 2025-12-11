@@ -58,6 +58,8 @@ function GameArea(props: QuestionAreaProps) {
   }
 
   function handleNext() {
+    setShowAnswer(false);
+    setIsPlaying(false);
     onNext();
   }
 
