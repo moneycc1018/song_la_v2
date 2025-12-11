@@ -1,4 +1,5 @@
 import { Checkbox } from "@/components/ui/checkbox";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 import { SearchDataType } from "@/types/ytmusic.type";
@@ -43,44 +44,47 @@ function DataTable(props: DataTableProps) {
   }
 
   return (
-    <Table className="w-full table-fixed">
-      <TableHeader>
-        <TableRow>
-          <TableHead className="w-8">
-            <Checkbox checked={isAllSelected} onCheckedChange={handleSelectAll} />
-          </TableHead>
-          <TableHead>Track Name</TableHead>
-          <TableHead>Album Name</TableHead>
-          <TableHead>Artist Name</TableHead>
-          <TableHead className="w-32">Release Year</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {data.length > 0 ? (
-          data.map((track) => {
-            const isSelected = selectedTracks.some((selected) => selected.video_id === track.video_id); // 檢查該列是否已被選取
-
-            return (
-              <TableRow key={track.video_id} data-state={isSelected ? "selected" : undefined}>
-                <TableCell>
-                  <Checkbox checked={isSelected} onCheckedChange={() => handleSelectOne(track)} />
-                </TableCell>
-                <TableCell className="truncate">{track.track_name}</TableCell>
-                <TableCell className="truncate">{track.album.name}</TableCell>
-                <TableCell className="truncate">{track.artists.map((artist) => artist.name).join(", ")}</TableCell>
-                <TableCell>{track.release_year}</TableCell>
-              </TableRow>
-            );
-          })
-        ) : (
+    <ScrollArea className="w-full">
+      <Table className="mb-3 w-full table-fixed">
+        <TableHeader>
           <TableRow>
-            <TableCell colSpan={5} className="h-24 text-center">
-              No Data Found.
-            </TableCell>
+            <TableHead className="w-8">
+              <Checkbox checked={isAllSelected} onCheckedChange={handleSelectAll} />
+            </TableHead>
+            <TableHead className="w-40">Track Name</TableHead>
+            <TableHead className="w-40">Album Name</TableHead>
+            <TableHead className="w-40">Artist Name</TableHead>
+            <TableHead className="w-32">Release Year</TableHead>
           </TableRow>
-        )}
-      </TableBody>
-    </Table>
+        </TableHeader>
+        <TableBody>
+          {data.length > 0 ? (
+            data.map((track) => {
+              const isSelected = selectedTracks.some((selected) => selected.video_id === track.video_id); // 檢查該列是否已被選取
+
+              return (
+                <TableRow key={track.video_id} data-state={isSelected ? "selected" : undefined}>
+                  <TableCell>
+                    <Checkbox checked={isSelected} onCheckedChange={() => handleSelectOne(track)} />
+                  </TableCell>
+                  <TableCell className="truncate">{track.track_name}</TableCell>
+                  <TableCell className="truncate">{track.album.name}</TableCell>
+                  <TableCell className="truncate">{track.artists.map((artist) => artist.name).join(", ")}</TableCell>
+                  <TableCell>{track.release_year}</TableCell>
+                </TableRow>
+              );
+            })
+          ) : (
+            <TableRow>
+              <TableCell colSpan={5} className="h-24 text-center">
+                No Data Found.
+              </TableCell>
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
+      <ScrollBar orientation="horizontal" />
+    </ScrollArea>
   );
 }
 

@@ -115,7 +115,7 @@ function PlaygroundArea() {
   return (
     <div className="flex flex-col gap-4">
       <GameArea currentTrack={currentTrack} onNext={handleNextTrack} />
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         <SelectArtistsArea selectedArtists={selectedArtists} setSelectedArtists={setSelectedArtists} />
         <SelectTagsArea />
       </div>

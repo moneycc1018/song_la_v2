@@ -3,9 +3,10 @@
 import { useState } from "react";
 
 import { useQuery } from "@tanstack/react-query";
-import { XIcon } from "lucide-react";
+import { CircleMinusIcon, CirclePlusIcon, XIcon } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -58,25 +59,49 @@ function SelectArtistsArea(props: SelectArtistsAreaProps) {
     (artist) => !selectedArtists.some((selected) => selected.id === artist.id),
   );
 
+  function handleSelectAll() {
+    setSelectedArtists(queryResult);
+  }
+
+  function handleRemoveAll() {
+    setSelectedArtists([]);
+  }
+
   return (
     <Card>
       <CardHeader>
         <CardTitle>Select Artists</CardTitle>
       </CardHeader>
       <CardContent className="flex flex-col gap-1">
-        <div className="bg-background border-foreground flex w-full items-center gap-2 rounded-md border">
-          <Input
-            className="border-0 focus-visible:ring-0"
-            placeholder="Artist Name"
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            onFocus={() => setOpen(true)}
-            onClick={() => setOpen(true)}
-            onBlur={() => setOpen(false)}
-          />
-          <button className="hover:text-destructive mr-2" onClick={() => setInputValue("")}>
-            <XIcon size={20} />
-          </button>
+        <div className="flex flex-col gap-2 md:flex-row">
+          <div className="bg-background border-foreground flex w-full items-center gap-2 rounded-md border">
+            <Input
+              className="border-0 focus-visible:ring-0"
+              placeholder="Artist Name"
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              onFocus={() => setOpen(true)}
+              onClick={() => setOpen(true)}
+              onBlur={() => setOpen(false)}
+            />
+            <button className="hover:text-destructive mr-2" onClick={() => setInputValue("")}>
+              <XIcon size={20} />
+            </button>
+          </div>
+          <div className="flex gap-2">
+            <Button variant="outline" className="cursor-pointer" onClick={handleSelectAll}>
+              <CirclePlusIcon />
+              <span>Select all</span>
+            </Button>
+            <Button
+              variant="outline"
+              className="text-destructive border-destructive hover:bg-destructive cursor-pointer"
+              onClick={handleRemoveAll}
+            >
+              <CircleMinusIcon />
+              <span>Remove all</span>
+            </Button>
+          </div>
         </div>
         <div className="relative">
           {availableArtists.length > 0 && (
