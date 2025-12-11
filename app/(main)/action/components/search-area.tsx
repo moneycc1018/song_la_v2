@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { useQuery } from "@tanstack/react-query";
 import { SearchIcon } from "lucide-react";
@@ -53,6 +53,13 @@ function SearchArea() {
     enabled: searchValue !== "" || searchType === "db",
   });
 
+  useEffect(() => {
+    if (searchType === "yt") {
+      setSelectedTracks([]);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [queryResult]);
+
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-center gap-2">
@@ -97,7 +104,12 @@ function SearchArea() {
       {
         <>
           {queryResult && (
-            <DataTable data={queryResult} selectedTracks={selectedTracks} setSelectedTracks={setSelectedTracks} />
+            <DataTable
+              data={queryResult}
+              selectedTracks={selectedTracks}
+              setSelectedTracks={setSelectedTracks}
+              searchType={searchType}
+            />
           )}
           {selectedTracks.length > 0 && searchType === "yt" && (
             <div className="flex justify-end">
