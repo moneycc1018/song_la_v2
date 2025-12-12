@@ -10,7 +10,7 @@ export default withAuth({
       }
 
       if (pathname.startsWith("/action")) {
-        return !!token && token.email === process.env.NEXT_PUBLIC_ADMIN_EMAIL;
+        return !!token && token.email === process.env.ADMIN_EMAIL;
       }
 
       return !!token;
