@@ -1,5 +1,6 @@
-import { ThemeSwitch } from "../theme-switch";
 import { Navbar } from "./navbar";
+import { ThemeSwitch } from "./theme-switch";
+import { UserNav } from "./user-nav";
 
 function Header() {
   return (
@@ -9,7 +10,10 @@ function Header() {
           <span className="text-2xl font-bold">Song La</span>
           <Navbar />
         </div>
-        <ThemeSwitch />
+        <div className="flex items-center gap-4">
+          <ThemeSwitch />
+          <UserNav />
+        </div>
       </div>
     </header>
   );

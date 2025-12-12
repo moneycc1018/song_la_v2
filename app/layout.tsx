@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 
-import { ThemeProvider } from "next-themes";
 import { Raleway, Roboto } from "next/font/google";
 
 import "@/styles/globals.css";
 
+import NextAuthProvider from "@/providers/next-auth-provider";
 import ReactQueryProvider from "@/providers/react-query-provider";
+import { NextThemesProvider } from "@/providers/theme-provider";
 
 const roboto = Roboto({
   weight: ["100", "300", "400", "500", "700", "900"],
@@ -32,9 +33,11 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${roboto.variable} ${raleway.variable} antialiased`}>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-          <ReactQueryProvider>{children}</ReactQueryProvider>
-        </ThemeProvider>
+        <NextThemesProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+          <NextAuthProvider>
+            <ReactQueryProvider>{children}</ReactQueryProvider>
+          </NextAuthProvider>
+        </NextThemesProvider>
       </body>
     </html>
   );
