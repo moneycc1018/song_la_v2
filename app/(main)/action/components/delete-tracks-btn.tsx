@@ -3,6 +3,7 @@
 import { useTransition } from "react";
 
 import { CircleMinusIcon } from "lucide-react";
+import { toast } from "sonner";
 
 import { deleteTracks } from "@/actions/ytmusic.action";
 
@@ -32,14 +33,23 @@ function DeleteTracksButton(props: DeleteTracksButtonProps) {
         const result = await deleteTracks(selectedVideoIds);
 
         if (result.success) {
-          alert("Tracks deleted successfully!");
+          toast.success("Tracks deleted successfully!", {
+            position: "top-center",
+            duration: 3000,
+          });
           onSuccess();
         } else {
-          alert(result.error);
+          toast.success(result.error, {
+            position: "top-center",
+            duration: 3000,
+          });
         }
       } catch (error) {
         console.error(error);
-        alert("An unexpected error occurred.");
+        toast.success("An unexpected error occurred.", {
+          position: "top-center",
+          duration: 3000,
+        });
       }
     });
   }

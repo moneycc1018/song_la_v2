@@ -48,7 +48,8 @@ function CustomPagination(props: CustomPaginationProps) {
   return (
     <div className="font-roboto flex flex-col items-center justify-between gap-2 py-1 md:flex-row">
       <div className="flex-1 text-sm">
-        Showing {totalItems > 0 ? startIndex + 1 : 0} to {Math.min(endIndex, totalItems)} of {totalItems} entries
+        Showing &nbsp;{totalItems > 0 ? startIndex + 1 : 0} &nbsp;to &nbsp;{Math.min(endIndex, totalItems)} &nbsp;of
+        &nbsp;{totalItems} &nbsp;entries
       </div>
       <Pagination className="w-fit">
         <PaginationContent>
@@ -59,7 +60,10 @@ function CustomPagination(props: CustomPaginationProps) {
                 e.preventDefault();
                 setCurrentPage(1);
               }}
-              className={currentPage === 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
+              className={cn(
+                "hover:text-primary hover:bg-transparent",
+                currentPage === 1 ? "pointer-events-none opacity-50" : "cursor-pointer",
+              )}
             />
           </PaginationItem>
           <PaginationItem>
@@ -69,7 +73,10 @@ function CustomPagination(props: CustomPaginationProps) {
                 e.preventDefault();
                 if (currentPage > 1) setCurrentPage((p) => p - 1);
               }}
-              className={currentPage === 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
+              className={cn(
+                "hover:text-primary hover:bg-transparent",
+                currentPage === 1 ? "pointer-events-none opacity-50" : "cursor-pointer",
+              )}
             />
           </PaginationItem>
           {totalPages > 5
@@ -121,7 +128,10 @@ function CustomPagination(props: CustomPaginationProps) {
                 e.preventDefault();
                 if (currentPage < totalPages) setCurrentPage((p) => p + 1);
               }}
-              className={currentPage === totalPages ? "pointer-events-none opacity-50" : "cursor-pointer"}
+              className={cn(
+                "hover:text-primary hover:bg-transparent",
+                currentPage === totalPages ? "pointer-events-none opacity-50" : "cursor-pointer",
+              )}
             />
           </PaginationItem>
           <PaginationItem>
@@ -131,7 +141,10 @@ function CustomPagination(props: CustomPaginationProps) {
                 e.preventDefault();
                 setCurrentPage(totalPages);
               }}
-              className={currentPage === totalPages ? "pointer-events-none opacity-50" : "cursor-pointer"}
+              className={cn(
+                "hover:text-primary hover:bg-transparent",
+                currentPage === totalPages ? "pointer-events-none opacity-50" : "cursor-pointer",
+              )}
             />
           </PaginationItem>
         </PaginationContent>

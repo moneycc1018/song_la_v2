@@ -4,7 +4,7 @@ import { type VariantProps, cva } from "class-variance-authority";
 
 import { cn } from "@/lib/utils";
 
-const spinnerVariants = cva("animate-spin text-muted-foreground", {
+const spinnerVariants = cva("text-muted-foreground animate-spin", {
   variants: {
     size: {
       default: "size-4",
@@ -41,7 +41,6 @@ function Spinner({ className, size, variant, ...props }: SpinnerProps) {
         fill="currentColor"
         d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
       />
-      {/* 無障礙閱讀輔助 */}
       <span className="sr-only">Loading...</span>
     </svg>
   );

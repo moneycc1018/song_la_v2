@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 
 import { Raleway, Roboto } from "next/font/google";
 
+import { Toaster } from "@/components/ui/sonner";
+
 import "@/styles/globals.css";
 
 import NextAuthProvider from "@/providers/next-auth-provider";
@@ -35,7 +37,10 @@ export default function RootLayout({
       <body className={`${roboto.variable} ${raleway.variable} antialiased`}>
         <NextThemesProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <NextAuthProvider>
-            <ReactQueryProvider>{children}</ReactQueryProvider>
+            <ReactQueryProvider>
+              <Toaster />
+              {children}
+            </ReactQueryProvider>
           </NextAuthProvider>
         </NextThemesProvider>
       </body>

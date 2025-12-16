@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 
 import { useQuery } from "@tanstack/react-query";
+import { toast } from "sonner";
 
 import { TrackData } from "@/types/ytmusic.type";
 import { Artist } from "@/types/ytmusic.type";
@@ -58,7 +59,11 @@ function PlaygroundArea() {
   // 播放下一首歌曲
   const handleNextTrack = async () => {
     if (selectedArtists.length === 0) {
-      alert("Please select at least one artist.");
+      toast.warning("Please select at least one artist.", {
+        position: "top-center",
+        duration: 3000,
+      });
+
       return;
     }
 
@@ -77,8 +82,12 @@ function PlaygroundArea() {
     // 2. Playlist is empty.
     // If we have already played some songs, it means we have exhausted the previous fetch.
     if (playedIds.size > 0) {
-      alert("No more songs available for selected artists!");
+      toast.warning("No more songs available for selected artists.", {
+        position: "top-center",
+        duration: 3000,
+      });
       setCurrentTrack(null);
+
       return;
     }
 
@@ -91,7 +100,10 @@ function PlaygroundArea() {
         const newTracks = tracks.filter((track) => !playedIds.has(track.video_id));
 
         if (newTracks.length === 0) {
-          alert("No songs found for these artists!");
+          toast.warning("No songs found for these artists.", {
+            position: "top-center",
+            duration: 3000,
+          });
           setCurrentTrack(null);
         } else {
           const shuffled = shuffleArray(newTracks);
@@ -104,11 +116,17 @@ function PlaygroundArea() {
           setPlayedIds((prev) => new Set(prev).add(nextTrack.video_id));
         }
       } else if (isError) {
-        alert(error.message);
+        toast.error(error.message, {
+          position: "top-center",
+          duration: 3000,
+        });
       }
     } catch (error) {
       console.error(error);
-      alert("An error occurred.");
+      toast.error("An unexpected error occurred.", {
+        position: "top-center",
+        duration: 3000,
+      });
     }
   };
 

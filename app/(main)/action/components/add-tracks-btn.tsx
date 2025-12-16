@@ -3,6 +3,7 @@
 import { useTransition } from "react";
 
 import { CirclePlusIcon } from "lucide-react";
+import { toast } from "sonner";
 
 import { createTracks } from "@/actions/ytmusic.action";
 
@@ -30,18 +31,30 @@ function AddTracksButton(props: AddTracksButtonProps) {
         const result = await createTracks(selectedTracks);
 
         if (result.success) {
-          alert("Tracks added successfully!"); // 建議未來改用 Toast
+          toast.success("Tracks added successfully!", {
+            position: "top-center",
+            duration: 3000,
+          });
           onSuccess(); // 通知父元件清空選擇
         } else {
           if (result.duplicates && result.duplicates.length > 0) {
-            alert(`Duplicate tracks found: ${result.duplicates.join(", ")}`);
+            toast.warning(`Duplicate tracks found: ${result.duplicates.join(", ")}`, {
+              position: "top-center",
+              duration: 3000,
+            });
           } else {
-            alert(result.error);
+            toast.error(result.error, {
+              position: "top-center",
+              duration: 3000,
+            });
           }
         }
       } catch (error) {
         console.error(error);
-        alert("An unexpected error occurred.");
+        toast.error("An unexpected error occurred.", {
+          position: "top-center",
+          duration: 3000,
+        });
       }
     });
   }
