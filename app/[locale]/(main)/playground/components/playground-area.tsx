@@ -9,8 +9,8 @@ import { TrackData } from "@/types/ytmusic.type";
 import { Artist } from "@/types/ytmusic.type";
 
 import { GameArea } from "./game-area";
-import { SelectArtistsArea } from "./select-artists-area";
-import { SelectTagsArea } from "./select-tags-area";
+import { SelectArtistsCard } from "./select-artists-card";
+import { SelectTagsCard } from "./select-tags-card";
 
 function PlaygroundArea() {
   const [selectedArtists, setSelectedArtists] = useState<Artist[]>([]);
@@ -134,8 +134,8 @@ function PlaygroundArea() {
     <div className="flex flex-col gap-4">
       <GameArea currentTrack={currentTrack} onNext={handleNextTrack} />
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-        <SelectArtistsArea selectedArtists={selectedArtists} setSelectedArtists={setSelectedArtists} />
-        <SelectTagsArea />
+        <SelectArtistsCard selectedArtists={selectedArtists} setSelectedArtists={setSelectedArtists} />
+        <SelectTagsCard />
       </div>
       {isFetching && <div className="text-muted-foreground text-center text-sm">Loading tracks...</div>}
     </div>

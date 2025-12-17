@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-function SelectTagsArea() {
+function SelectTagsCard() {
   return (
     <Card>
       <CardHeader>
@@ -11,4 +11,4 @@ function SelectTagsArea() {
   );
 }
 
-export { SelectTagsArea };
+export { SelectTagsCard };

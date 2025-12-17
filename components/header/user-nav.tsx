@@ -2,7 +2,6 @@
 
 import { LogOut } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
-import Link from "next/link";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -13,6 +12,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+
+import { Link } from "@/i18n/navigation";
 
 export function UserNav() {
   const { data: session } = useSession();

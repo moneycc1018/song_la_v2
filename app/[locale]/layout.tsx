@@ -1,12 +1,17 @@
 import type { Metadata } from "next";
 
+import { hasLocale } from "next-intl";
+import { getMessages } from "next-intl/server";
 import { Raleway, Roboto } from "next/font/google";
+import { notFound } from "next/navigation";
 
 import { Toaster } from "@/components/ui/sonner";
 
 import "@/styles/globals.css";
 
+import { routing } from "@/i18n/routing";
 import NextAuthProvider from "@/providers/next-auth-provider";
+import NextIntlProvider from "@/providers/next-intl-provider";
 import ReactQueryProvider from "@/providers/react-query-provider";
 import { NextThemesProvider } from "@/providers/theme-provider";
 
@@ -27,21 +32,33 @@ export const metadata: Metadata = {
   description: "A simple song game based on ytmusic.",
 };
 
-export default function RootLayout({
+export default async function LocaleLayout({
   children,
+  params,
 }: Readonly<{
   children: React.ReactNode;
+  params: Promise<{ locale: string }>;
 }>) {
+  const { locale } = await params;
+
+  if (!hasLocale(routing.locales, locale)) {
+    notFound();
+  }
+
+  const messages = await getMessages();
+
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang={locale} suppressHydrationWarning>
       <body className={`${roboto.variable} ${raleway.variable} antialiased`}>
         <NextThemesProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-          <NextAuthProvider>
-            <ReactQueryProvider>
-              <Toaster />
-              {children}
-            </ReactQueryProvider>
-          </NextAuthProvider>
+          <NextIntlProvider locale={locale} messages={messages}>
+            <NextAuthProvider>
+              <ReactQueryProvider>
+                <Toaster />
+                {children}
+              </ReactQueryProvider>
+            </NextAuthProvider>
+          </NextIntlProvider>
         </NextThemesProvider>
       </body>
     </html>

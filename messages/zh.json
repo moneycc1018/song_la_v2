@@ -1,0 +1,7 @@
+{
+    "login": {
+        "description": "登入您的帳戶以繼續",
+        "loginWithGoogle": "使用 Google 登入",
+        "loginAsGuest": "以訪客身份繼續"
+    }
+}

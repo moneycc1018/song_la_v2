@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 
 interface NavbarProps {
   isAdmin?: boolean;
@@ -7,7 +7,7 @@ interface NavbarProps {
 function Navbar({ isAdmin }: NavbarProps) {
   return (
     <nav className="flex items-center gap-4 font-medium">
-      <Link href="/playground">Playground</Link>
+      {isAdmin && <Link href="/playground">Playground</Link>}
       {isAdmin && <Link href="/action">Action</Link>}
     </nav>
   );

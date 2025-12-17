@@ -15,12 +15,12 @@ import { Artist } from "@/types/ytmusic.type";
 
 import { cn } from "@/lib/utils";
 
-interface SelectArtistsAreaProps {
+interface SelectArtistsCardProps {
   selectedArtists: Artist[];
   setSelectedArtists: React.Dispatch<React.SetStateAction<Artist[]>>;
 }
 
-function SelectArtistsArea(props: SelectArtistsAreaProps) {
+function SelectArtistsCard(props: SelectArtistsCardProps) {
   const { selectedArtists, setSelectedArtists } = props;
   const [inputValue, setInputValue] = useState("");
   const [open, setOpen] = useState(false);
@@ -145,4 +145,4 @@ function SelectArtistsArea(props: SelectArtistsAreaProps) {
   );
 }
 
-export { SelectArtistsArea };
+export { SelectArtistsCard };
