@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 
 import { useQuery } from "@tanstack/react-query";
+import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 
 import { TrackData } from "@/types/ytmusic.type";
@@ -18,6 +19,7 @@ function PlaygroundArea() {
   const [currentTrack, setCurrentTrack] = useState<TrackData | null>(null);
   const [playedIds, setPlayedIds] = useState<Set<string>>(new Set());
   const artistIdsString = selectedArtists.map((a) => a.id).join("!@!");
+  const t = useTranslations("playground");
 
   // Reset game state when artists change
   useEffect(() => {
@@ -137,7 +139,7 @@ function PlaygroundArea() {
         <SelectArtistsCard selectedArtists={selectedArtists} setSelectedArtists={setSelectedArtists} />
         <SelectTagsCard />
       </div>
-      {isFetching && <div className="text-muted-foreground text-center text-sm">Loading tracks...</div>}
+      {isFetching && <div className="text-muted-foreground text-center text-sm">{t("loadingTracks")}</div>}
     </div>
   );
 }

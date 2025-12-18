@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 
 import { useQuery } from "@tanstack/react-query";
 import { SearchIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import { Spinner } from "@/components/spinner";
 import { Button } from "@/components/ui/button";
@@ -22,6 +23,7 @@ function SearchArea() {
   const [searchValue, setSearchValue] = useState("");
   const [searchType, setSearchType] = useState("yt");
   const [selectedTracks, setSelectedTracks] = useState<SearchDataType[]>([]);
+  const t = useTranslations("action");
 
   // 搜尋歌曲
   function handleSearch() {
@@ -65,7 +67,7 @@ function SearchArea() {
       <div className="flex items-center justify-center gap-2">
         <Input
           className="max-w-60"
-          placeholder="Search..."
+          placeholder={t("placeholder")}
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
         />
@@ -78,15 +80,15 @@ function SearchArea() {
             setSelectedTracks([]);
           }}
         >
-          <SelectTrigger className="w-40 cursor-pointer">
+          <SelectTrigger className="w-40 min-w-32 cursor-pointer">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="yt" className="cursor-pointer">
-              YT Music
+              {t("ytmusic")}
             </SelectItem>
             <SelectItem value="db" className="cursor-pointer">
-              Database
+              {t("database")}
             </SelectItem>
           </SelectContent>
         </Select>
@@ -97,7 +99,7 @@ function SearchArea() {
           disabled={isLoading}
         >
           {isLoading ? <Spinner /> : <SearchIcon />}
-          <span>Search</span>
+          <span>{t("search")}</span>
         </Button>
       </div>
       {isError && <p>{error?.message}</p>}

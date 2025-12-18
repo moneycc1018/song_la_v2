@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 
 import { motion } from "framer-motion";
 import { CheckIcon, FastForwardIcon, PauseIcon, PlayIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
 import ReactPlayer from "react-player";
 
 import { Button } from "@/components/ui/button";
@@ -42,6 +43,7 @@ function GameArea(props: QuestionAreaProps) {
   const { currentTrack, onNext } = props;
   const [isPlaying, setIsPlaying] = useState(false);
   const [showAnswer, setShowAnswer] = useState(false);
+  const t = useTranslations("playground");
 
   useEffect(() => {
     if (currentTrack) {
@@ -90,7 +92,7 @@ function GameArea(props: QuestionAreaProps) {
           {isPlaying ? (
             <div className="flex flex-col items-center gap-2">
               <MusicAnimation />
-              <span className="text-muted-foreground animate-pulse text-xs">Playing...</span>
+              <span className="text-muted-foreground animate-pulse text-xs">{t("playing")}</span>
             </div>
           ) : (
             <span className="text-muted-foreground">{currentTrack ? "Paused" : ""}</span>
@@ -113,18 +115,18 @@ function GameArea(props: QuestionAreaProps) {
         ) : (
           <Button variant="outline" className="w-28 cursor-pointer" onClick={handleNext}>
             <PlayIcon />
-            <span>Start</span>
+            <span>{t("start")}</span>
           </Button>
         )}
         {showAnswer ? (
           <Button variant="default" className="w-28 cursor-pointer" onClick={handleNext}>
             <FastForwardIcon />
-            <span>Next</span>
+            <span>{t("next")}</span>
           </Button>
         ) : (
           <Button variant="outline" className="w-28 cursor-pointer" onClick={handleAnswer} disabled={!currentTrack}>
             <CheckIcon />
-            <span>Answer</span>
+            <span>{t("answer")}</span>
           </Button>
         )}
       </div>

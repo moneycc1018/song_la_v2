@@ -1,7 +1,42 @@
 {
-    "login": {
-        "description": "登入您的帳戶以繼續",
-        "loginWithGoogle": "使用 Google 登入",
-        "loginAsGuest": "以訪客身份繼續"
+  "login": {
+    "description": "登入您的帳戶以繼續",
+    "loginWithGoogle": "使用 Google 登入",
+    "loginAsGuest": "以訪客身份繼續"
+  },
+  "header": {
+    "loginNoun": "登入",
+    "logoutVerb": "登出",
+    "playground": "遊戲",
+    "action": "操作"
+  },
+  "playground": {
+    "loadingTracks": "歌曲載入中...",
+    "playing": "播放中...",
+    "answer": "解答",
+    "start": "開始",
+    "artist": {
+      "title": "選擇歌手",
+      "placeholder": "歌手名",
+      "selectAll": "選擇全部",
+      "removeAll": "移除全部"
     }
+  },
+  "action": {
+    "placeholder": "搜尋...",
+    "ytmusic": "YT Music",
+    "database": "資料庫",
+    "search": "搜尋",
+    "table": {
+      "trackNameColumn": "歌名",
+      "artistNameColumn": "歌手名",
+      "albumNameColumn": "專輯名",
+      "releaseYearColumn": "發行年份",
+      "noData": "查無資料",
+      "showing": "顯示第",
+      "to": "至",
+      "of": "筆，共",
+      "entries": "筆資料"
+    }
+  }
 }

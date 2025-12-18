@@ -1,7 +1,42 @@
 {
-    "login": {
-        "description": "Log in to your account to continue",
-        "loginWithGoogle": "Log in with Google",
-        "loginAsGuest": "Continue as Guest"
+  "login": {
+    "description": "Log in to your account to continue",
+    "loginWithGoogle": "Log in with Google",
+    "loginAsGuest": "Continue as Guest"
+  },
+  "header": {
+    "loginNoun": "Login",
+    "logoutVerb": "Log out",
+    "playground": "Playground",
+    "action": "Action"
+  },
+  "playground": {
+    "loadingTracks": "Loading tracks...",
+    "playing": "Playing...",
+    "answer": "Answer",
+    "start": "Start",
+    "artist": {
+      "title": "Select Artists",
+      "placeholder": "Artist Name",
+      "selectAll": "Select All",
+      "removeAll": "Remove All"
     }
+  },
+  "action": {
+    "placeholder": "Search...",
+    "ytmusic": "YT Music",
+    "database": "Database",
+    "search": "Search",
+    "table": {
+      "trackNameColumn": "Track Name",
+      "artistNameColumn": "Artist Name",
+      "albumNameColumn": "Album Name",
+      "releaseYearColumn": "Release Year",
+      "noData": "No Data Found.",
+      "showing": "Showing",
+      "to": "to",
+      "of": "of",
+      "entries": "entries"
+    }
+  }
 }

@@ -4,6 +4,7 @@ import { useState } from "react";
 
 import { useQuery } from "@tanstack/react-query";
 import { CircleMinusIcon, CirclePlusIcon, XIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -24,6 +25,7 @@ function SelectArtistsCard(props: SelectArtistsCardProps) {
   const { selectedArtists, setSelectedArtists } = props;
   const [inputValue, setInputValue] = useState("");
   const [open, setOpen] = useState(false);
+  const t = useTranslations("playground.artist");
 
   const { data: queryResult = [] } = useQuery<Artist[]>({
     queryKey: ["artists"],
@@ -70,14 +72,14 @@ function SelectArtistsCard(props: SelectArtistsCardProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Select Artists</CardTitle>
+        <CardTitle>{t("title")}</CardTitle>
       </CardHeader>
       <CardContent className="flex flex-col gap-1">
         <div className="flex flex-col gap-2 md:flex-row">
           <div className="bg-background border-foreground flex w-full items-center gap-2 rounded-md border">
             <Input
               className="border-0 focus-visible:ring-0"
-              placeholder="Artist Name"
+              placeholder={t("placeholder")}
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               onFocus={() => setOpen(true)}
@@ -91,7 +93,7 @@ function SelectArtistsCard(props: SelectArtistsCardProps) {
           <div className="flex gap-2">
             <Button variant="outline" className="cursor-pointer" onClick={handleSelectAll}>
               <CirclePlusIcon />
-              <span>Select all</span>
+              <span>{t("selectAll")}</span>
             </Button>
             <Button
               variant="outline"
@@ -99,7 +101,7 @@ function SelectArtistsCard(props: SelectArtistsCardProps) {
               onClick={handleRemoveAll}
             >
               <CircleMinusIcon />
-              <span>Remove all</span>
+              <span>{t("removeAll")}</span>
             </Button>
           </div>
         </div>

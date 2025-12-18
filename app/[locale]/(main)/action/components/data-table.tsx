@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 
+import { useTranslations } from "next-intl";
+
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   Pagination,
@@ -27,11 +29,12 @@ interface CustomPaginationProps {
   startIndex: number;
   endIndex: number;
   totalItems: number;
+  t: any;
 }
 
 // 客製化分頁
 function CustomPagination(props: CustomPaginationProps) {
-  const { currentPage, setCurrentPage, totalPages, startIndex, endIndex, totalItems } = props;
+  const { currentPage, setCurrentPage, totalPages, startIndex, endIndex, totalItems, t } = props;
 
   // Pagination Logic Helpers
   const pageIndex = currentPage - 1;
@@ -48,8 +51,8 @@ function CustomPagination(props: CustomPaginationProps) {
   return (
     <div className="font-roboto flex flex-col items-center justify-between gap-2 py-1 md:flex-row">
       <div className="flex-1 text-sm">
-        Showing &nbsp;{totalItems > 0 ? startIndex + 1 : 0} &nbsp;to &nbsp;{Math.min(endIndex, totalItems)} &nbsp;of
-        &nbsp;{totalItems} &nbsp;entries
+        {t("showing")} &nbsp;{totalItems > 0 ? startIndex + 1 : 0} &nbsp;{t("to")} &nbsp;
+        {Math.min(endIndex, totalItems)} &nbsp;{t("of")} &nbsp;{totalItems} &nbsp;{t("entries")}
       </div>
       <Pagination className="w-fit">
         <PaginationContent>
@@ -165,6 +168,7 @@ function DataTable(props: DataTableProps) {
   const { data, selectedTracks, setSelectedTracks, searchType } = props;
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
+  const t = useTranslations("action.table");
 
   useEffect(() => {
     setCurrentPage(1);
@@ -223,10 +227,10 @@ function DataTable(props: DataTableProps) {
               <TableHead className="w-8">
                 <Checkbox checked={isAllSelected} onCheckedChange={handleSelectAll} />
               </TableHead>
-              <TableHead className="w-60">Track Name</TableHead>
-              <TableHead className="w-40">Album Name</TableHead>
-              <TableHead className="w-40">Artist Name</TableHead>
-              <TableHead className="w-28">Release Year</TableHead>
+              <TableHead className="w-60">{t("trackNameColumn")}</TableHead>
+              <TableHead className="w-40">{t("albumNameColumn")}</TableHead>
+              <TableHead className="w-40">{t("artistNameColumn")}</TableHead>
+              <TableHead className="w-28">{t("releaseYearColumn")}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -263,7 +267,7 @@ function DataTable(props: DataTableProps) {
             ) : (
               <TableRow>
                 <TableCell colSpan={5} className="h-24 text-center">
-                  No Data Found.
+                  {t("noData")}
                 </TableCell>
               </TableRow>
             )}
@@ -279,6 +283,7 @@ function DataTable(props: DataTableProps) {
           startIndex={startIndex}
           endIndex={endIndex}
           totalItems={totalItems}
+          t={t}
         />
       )}
     </div>

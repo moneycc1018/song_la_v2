@@ -1,7 +1,5 @@
 "use client";
 
-import { useState } from "react";
-
 import { Check, Globe } from "lucide-react";
 import { useLocale } from "next-intl";
 

@@ -2,6 +2,7 @@
 
 import { LogOut } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
+import { useTranslations } from "next-intl";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -17,11 +18,12 @@ import { Link } from "@/i18n/navigation";
 
 export function UserNav() {
   const { data: session } = useSession();
+  const t = useTranslations("header");
 
   if (!session) {
     return (
       <Link href="/login" className="text-sm font-medium hover:underline">
-        Login
+        {t("loginNoun")}
       </Link>
     );
   }
@@ -50,7 +52,7 @@ export function UserNav() {
             onClick={() => signOut({ callbackUrl: "/login" })}
           >
             <LogOut />
-            <span>Log out</span>
+            <span>{t("logoutVerb")}</span>
           </button>
         </DropdownMenuItem>
       </DropdownMenuContent>
