@@ -15,11 +15,18 @@ export interface SearchDataType {
   lyrics?: string;
 }
 
-export interface TrackData extends SearchDataType {
-  tags?: string[];
+export interface TrackType extends SearchDataType {
+  tags?: TagType[];
 }
 
-export interface Artist {
+export interface ArtistType {
   id: string;
   name: string;
+}
+
+export interface TagType {
+  id: number;
+  name: string;
+  deprecated?: boolean;
+  track_count?: number;
 }

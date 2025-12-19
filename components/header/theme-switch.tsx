@@ -2,7 +2,7 @@
 
 import * as React from "react";
 
-import { Moon, Sun } from "lucide-react";
+import { MoonIcon, SunIcon } from "lucide-react";
 import { useTheme } from "next-themes";
 
 function ThemeSwitch() {
@@ -11,10 +11,10 @@ function ThemeSwitch() {
   return (
     <div>
       <button className="block cursor-pointer dark:hidden" onClick={() => setTheme("dark")}>
-        <Sun size={20} />
+        <SunIcon size={20} />
       </button>
       <button className="hidden cursor-pointer dark:block" onClick={() => setTheme("light")}>
-        <Moon size={20} />
+        <MoonIcon size={20} />
       </button>
     </div>
   );

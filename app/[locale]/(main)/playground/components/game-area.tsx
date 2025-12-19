@@ -9,7 +9,7 @@ import ReactPlayer from "react-player";
 
 import { Button } from "@/components/ui/button";
 
-import { TrackData } from "@/types/ytmusic.type";
+import { TrackType } from "@/types/ytmusic.type";
 
 // 柱狀波浪動畫
 function MusicAnimation() {
@@ -35,7 +35,7 @@ function MusicAnimation() {
 }
 
 interface QuestionAreaProps {
-  currentTrack: TrackData | null;
+  currentTrack: TrackType | null;
   onNext: () => void;
 }
 

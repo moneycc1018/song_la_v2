@@ -2,11 +2,11 @@
 
 import { useTransition } from "react";
 
-import { CircleMinusIcon } from "lucide-react";
+import { TrashIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 
-import { deleteTracks } from "@/actions/ytmusic.action";
+import { deleteTags } from "@/actions/ytmusic.action";
 
 import { Spinner } from "@/components/spinner";
 import {
@@ -22,44 +22,41 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 
-import { SearchDataType } from "@/types/ytmusic.type";
+import { TagType } from "@/types/ytmusic.type";
 
-interface DeleteTracksButtonProps {
-  selectedTracks: SearchDataType[];
+interface DeleteTagsButtonProps {
+  selectedTags: TagType[];
   onSuccess: () => void;
 }
 
-// 移除歌曲按鈕
-function DeleteTracksButton(props: DeleteTracksButtonProps) {
-  const { selectedTracks, onSuccess } = props;
+function DeleteTagsButton(props: DeleteTagsButtonProps) {
+  const { selectedTags, onSuccess } = props;
   const [isPending, startTransition] = useTransition();
   const t = useTranslations("action");
 
-  // 移除歌曲
   function handleDelete() {
-    if (selectedTracks.length === 0) return;
-
-    const selectedVideoIds = selectedTracks.map((track) => track.video_id);
+    if (selectedTags.length === 0) return;
 
     startTransition(async () => {
       try {
-        const result = await deleteTracks(selectedVideoIds);
+        const tagIds = selectedTags.map((t) => t.id);
+        const result = await deleteTags(tagIds);
 
         if (result.success) {
-          toast.success(t("track.message.deleteTrackSuccess"), {
+          toast.success(t("tag.message.deleteTagSuccess"), {
             position: "top-center",
             duration: 3000,
           });
           onSuccess();
         } else {
-          toast.success(result.error, {
+          toast.error(result.error, {
             position: "top-center",
             duration: 3000,
           });
         }
       } catch (error) {
         console.error(error);
-        toast.success(t("track.message.unexpectedError"), {
+        toast.error(t("tag.message.unexpectedError"), {
           position: "top-center",
           duration: 3000,
         });
@@ -70,19 +67,17 @@ function DeleteTracksButton(props: DeleteTracksButtonProps) {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button variant="destructive" className="cursor-pointer" disabled={isPending || selectedTracks.length === 0}>
-          {isPending ? <Spinner className="text-destructive" /> : <CircleMinusIcon />}
+        <Button variant="destructive" className="cursor-pointer" disabled={isPending || selectedTags.length === 0}>
+          {isPending ? <Spinner /> : <TrashIcon />}
           <span>
-            {t("button.delete")} ({selectedTracks.length})
+            {t("button.delete")} ({selectedTags.length})
           </span>
         </Button>
       </AlertDialogTrigger>
-      <AlertDialogContent>
+      <AlertDialogContent className="sm:max-w-80">
         <AlertDialogHeader>
-          <AlertDialogTitle>{t("track.title.delete")}</AlertDialogTitle>
-          <AlertDialogDescription>
-            {t("track.description.delete", { count: selectedTracks.length })}
-          </AlertDialogDescription>
+          <AlertDialogTitle>{t("tag.title.delete")}</AlertDialogTitle>
+          <AlertDialogDescription>{t("tag.description.delete", { count: selectedTags.length })}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel className="cursor-pointer">{t("button.cancel")}</AlertDialogCancel>
@@ -98,4 +93,4 @@ function DeleteTracksButton(props: DeleteTracksButtonProps) {
   );
 }
 
-export { DeleteTracksButton };
+export { DeleteTagsButton };

@@ -11,11 +11,15 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
-import { SearchDataType } from "@/types/ytmusic.type";
+import { SearchDataType, TagType } from "@/types/ytmusic.type";
 
+import { AddTagButton } from "./add-tag-btn";
 import { AddTracksButton } from "./add-tracks-btn";
-import { DataTable } from "./data-table";
+import { DeleteTagsButton } from "./delete-tags-btn";
 import { DeleteTracksButton } from "./delete-tracks-btn";
+import { TagTable } from "./tag-table";
+import { TrackTable } from "./track-table";
+import { UpdateTagButton } from "./update-tag-btn";
 
 // 搜尋區域
 function SearchArea() {
@@ -23,6 +27,7 @@ function SearchArea() {
   const [searchValue, setSearchValue] = useState("");
   const [searchType, setSearchType] = useState("yt");
   const [selectedTracks, setSelectedTracks] = useState<SearchDataType[]>([]);
+  const [selectedTags, setSelectedTags] = useState<TagType[]>([]);
   const t = useTranslations("action");
 
   // 搜尋歌曲
@@ -37,10 +42,14 @@ function SearchArea() {
     error,
     data: queryResult,
     refetch,
-  } = useQuery<SearchDataType[]>({
+  } = useQuery({
     queryKey: [`search-${searchType}`, searchValue],
     queryFn: async () => {
-      const endpoint = searchType === "yt" ? "/api/ytmusic/search" : "/api/ytmusic/tracks"; // 依搜尋類型決定api
+      let endpoint = "";
+      if (searchType === "yt") endpoint = "/api/ytmusic/search";
+      else if (searchType === "db_track") endpoint = "/api/ytmusic/tracks";
+      else if (searchType === "db_tag") endpoint = "/api/ytmusic/tags";
+
       const response = await fetch(`${endpoint}?q=${searchValue}`);
 
       if (!response.ok) {
@@ -52,15 +61,15 @@ function SearchArea() {
 
       return result;
     },
-    enabled: searchValue !== "" || searchType === "db",
+    enabled: searchValue !== "" || searchType === "db_track" || searchType === "db_tag",
   });
 
   useEffect(() => {
-    if (searchType === "yt") {
-      setSelectedTracks([]);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [queryResult]);
+    setSelectedTracks([]);
+    setSelectedTags([]);
+  }, [queryResult, searchType]);
+
+  const isTagMode = searchType === "db_tag";
 
   return (
     <div className="flex flex-col gap-4">
@@ -77,7 +86,7 @@ function SearchArea() {
           onValueChange={(value) => {
             setSearchType(value);
             setSearchValue("");
-            setSelectedTracks([]);
+            setInputValue("");
           }}
         >
           <SelectTrigger className="w-40 min-w-32 cursor-pointer">
@@ -87,8 +96,11 @@ function SearchArea() {
             <SelectItem value="yt" className="cursor-pointer">
               {t("ytmusic")}
             </SelectItem>
-            <SelectItem value="db" className="cursor-pointer">
-              {t("database")}
+            <SelectItem value="db_track" className="cursor-pointer">
+              {t("databaseTrack")}
+            </SelectItem>
+            <SelectItem value="db_tag" className="cursor-pointer">
+              {t("databaseTag")}
             </SelectItem>
           </SelectContent>
         </Select>
@@ -103,34 +115,62 @@ function SearchArea() {
         </Button>
       </div>
       {isError && <p>{error?.message}</p>}
-      {
+
+      {queryResult && (
         <>
-          {queryResult && (
-            <DataTable
-              data={queryResult}
+          {isTagMode ? (
+            <TagTable data={queryResult as TagType[]} selectedTags={selectedTags} setSelectedTags={setSelectedTags} />
+          ) : (
+            <TrackTable
+              data={queryResult as SearchDataType[]}
               selectedTracks={selectedTracks}
               setSelectedTracks={setSelectedTracks}
               searchType={searchType}
             />
           )}
-          {selectedTracks.length > 0 && searchType === "yt" && (
-            <div className="flex justify-end">
-              <AddTracksButton selectedTracks={selectedTracks} onSuccess={() => setSelectedTracks([])} />
-            </div>
-          )}
-          {selectedTracks.length > 0 && searchType === "db" && (
-            <div className="flex justify-end">
-              <DeleteTracksButton
-                selectedTracks={selectedTracks}
-                onSuccess={() => {
-                  setSelectedTracks([]);
-                  refetch();
-                }}
-              />
-            </div>
-          )}
         </>
-      }
+      )}
+
+      {/* Buttons Area */}
+      <div className="flex justify-end gap-2">
+        {selectedTracks.length > 0 && searchType === "yt" && (
+          <AddTracksButton selectedTracks={selectedTracks} onSuccess={() => setSelectedTracks([])} />
+        )}
+        {selectedTracks.length > 0 && searchType === "db_track" && (
+          <DeleteTracksButton
+            selectedTracks={selectedTracks}
+            onSuccess={() => {
+              setSelectedTracks([]);
+              refetch();
+            }}
+          />
+        )}
+        {isTagMode && (
+          <div className="flex gap-2">
+            <AddTagButton onSuccess={refetch} />
+            {selectedTags.length > 0 && (
+              <>
+                {selectedTags.length === 1 && (
+                  <UpdateTagButton
+                    selectedTag={selectedTags[0]}
+                    onSuccess={() => {
+                      setSelectedTags([]);
+                      refetch();
+                    }}
+                  />
+                )}
+                <DeleteTagsButton
+                  selectedTags={selectedTags}
+                  onSuccess={() => {
+                    setSelectedTags([]);
+                    refetch();
+                  }}
+                />
+              </>
+            )}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

@@ -71,3 +71,63 @@ export async function deleteTracks(videoIds: string[]) {
     return { success: false, error: "Failed to delete tracks" };
   }
 }
+
+// 新增標籤
+export async function createTag(tagName: string) {
+  try {
+    await checkAdmin();
+    const result = await ytmusicService.createTag(tagName);
+
+    if (!result.success) {
+      return { success: false, error: result.error };
+    }
+
+    return { success: true, data: result.data };
+  } catch (error) {
+    console.error("Failed to create tag:", error);
+    if (error instanceof Error && error.message.includes("Unauthorized")) {
+      return { success: false, error: error.message };
+    }
+    return { success: false, error: "Failed to create tag" };
+  }
+}
+
+// 更新標籤
+export async function updateTag(tagId: number, tagName: string) {
+  try {
+    await checkAdmin();
+    const result = await ytmusicService.updateTag(tagId, tagName);
+
+    if (!result.success) {
+      return { success: false, error: result.error };
+    }
+
+    return { success: true, data: result.data };
+  } catch (error) {
+    console.error("Failed to update tag:", error);
+    if (error instanceof Error && error.message.includes("Unauthorized")) {
+      return { success: false, error: error.message };
+    }
+    return { success: false, error: "Failed to update tag" };
+  }
+}
+
+// 批量刪除標籤
+export async function deleteTags(tagIds: number[]) {
+  try {
+    await checkAdmin();
+    const result = await ytmusicService.deleteTags(tagIds);
+
+    if (!result.success) {
+      return { success: false, error: "Failed to delete tags" };
+    }
+
+    return { success: true };
+  } catch (error) {
+    console.error("Failed to delete tags:", error);
+    if (error instanceof Error && error.message.includes("Unauthorized")) {
+      return { success: false, error: error.message };
+    }
+    return { success: false, error: "Failed to delete tags" };
+  }
+}

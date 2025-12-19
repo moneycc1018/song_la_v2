@@ -13,20 +13,44 @@ model ytmusic_info {
   album_id              String                  @db.VarChar(50)
   album_name            String                  @db.VarChar(255)
   release_year          Int?
-  tags                  Json?                   @default("[]")
   lyrics                String?
   created_at            DateTime                @default(now()) @db.Timestamp(6)
   updated_at            DateTime                @default(now()) @db.Timestamp(6)
   ytmusic_track_artists ytmusic_track_artists[]
+  ytmusic_track_tags    ytmusic_track_tags[]
+}
+
+model ytmusic_artists {
+  artist_id             String                  @id(map: "pk_ytmusic_artists") @db.VarChar(50)
+  artist_name           String                  @db.VarChar(255)
+  ytmusic_track_artists ytmusic_track_artists[]
 }
 
 model ytmusic_track_artists {
-  video_id     String       @db.VarChar(50)
-  artist_id    String       @db.VarChar(50)
-  artist_name  String       @db.VarChar(255)
-  ytmusic_info ytmusic_info @relation(fields: [video_id], references: [video_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_ytmusic_track_artists_video_id")
+  video_id        String          @db.VarChar(50)
+  artist_id       String          @db.VarChar(50)
+  ytmusic_info    ytmusic_info    @relation(fields: [video_id], references: [video_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_ytmusic_track_artists_video_id")
+  ytmusic_artists ytmusic_artists @relation(fields: [artist_id], references: [artist_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_ytmusic_track_artists_artist_id")
 
   @@id([video_id, artist_id], map: "pk_ytmusic_track_artists")
+}
+
+model ytmusic_tags {
+  id                 Int                  @id @default(autoincrement())
+  tag_name           String               @unique @db.VarChar(50)
+  deprecated         Boolean              @default(false)
+  created_at         DateTime             @default(now()) @db.Timestamp(6)
+  updated_at         DateTime             @default(now()) @db.Timestamp(6)
+  ytmusic_track_tags ytmusic_track_tags[]
+}
+
+model ytmusic_track_tags {
+  video_id     String       @db.VarChar(50)
+  tag_id       Int
+  ytmusic_info ytmusic_info @relation(fields: [video_id], references: [video_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_ytmusic_track_tags_video_id")
+  ytmusic_tags ytmusic_tags @relation(fields: [tag_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_ytmusic_track_tags_tag_id")
+
+  @@id([video_id, tag_id], map: "pk_ytmusic_track_tags")
 }
 
 model User {
@@ -49,13 +73,13 @@ model Account {
   userId            String  @map("user_id")
   type              String
   provider          String
-  providerAccountId String  @map("provider_account_id") // 關鍵修正：JS用駝峰，DB用底線
-  refresh_token     String?
-  access_token      String?
+  providerAccountId String  @map("provider_account_id")
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
   expires_at        Int?
   token_type        String?
   scope             String?
-  id_token          String?
+  id_token          String? @db.Text
   session_state     String?
   user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -81,7 +105,7 @@ model Session {
 
 model VerificationToken {
   identifier String
-  token      String
+  token      String   @unique
   expires    DateTime
 
   @@unique([identifier, token])

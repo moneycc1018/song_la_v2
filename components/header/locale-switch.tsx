@@ -1,6 +1,6 @@
 "use client";
 
-import { Check, Globe } from "lucide-react";
+import { CheckIcon, GlobeIcon } from "lucide-react";
 import { useLocale } from "next-intl";
 
 import {
@@ -30,7 +30,7 @@ function LocaleSwitch() {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <button className="cursor-pointer rounded-full outline-none">
-          <Globe size={20} />
+          <GlobeIcon size={20} />
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="min-w-20" align="end" sideOffset={8}>
@@ -41,7 +41,7 @@ function LocaleSwitch() {
               onClick={() => switchLocale(locale)}
             >
               <span>{locale}</span>
-              {locale === currentLocale && <Check size={20} />}
+              {locale === currentLocale && <CheckIcon size={20} />}
             </button>
           </DropdownMenuItem>
         ))}

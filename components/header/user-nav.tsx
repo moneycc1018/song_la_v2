@@ -1,6 +1,6 @@
 "use client";
 
-import { LogOut } from "lucide-react";
+import { LogOutIcon } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
 
@@ -51,7 +51,7 @@ export function UserNav() {
             className="flex w-full cursor-pointer items-center gap-2"
             onClick={() => signOut({ callbackUrl: "/login" })}
           >
-            <LogOut />
+            <LogOutIcon />
             <span>{t("logoutVerb")}</span>
           </button>
         </DropdownMenuItem>

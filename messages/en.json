@@ -13,11 +13,18 @@
   "playground": {
     "loadingTracks": "Loading tracks...",
     "playing": "Playing...",
-    "answer": "Answer",
     "start": "Start",
+    "next": "Next",
+    "answer": "Answer",
     "artist": {
       "title": "Select Artists",
       "placeholder": "Artist Name",
+      "selectAll": "Select All",
+      "removeAll": "Remove All"
+    },
+    "tag": {
+      "title": "Select Tags",
+      "placeholder": "Tag Name",
       "selectAll": "Select All",
       "removeAll": "Remove All"
     }
@@ -25,18 +32,68 @@
   "action": {
     "placeholder": "Search...",
     "ytmusic": "YT Music",
-    "database": "Database",
+    "databaseTrack": "Database-Track",
+    "databaseTag": "Database-Tag",
     "search": "Search",
     "table": {
-      "trackNameColumn": "Track Name",
-      "artistNameColumn": "Artist Name",
-      "albumNameColumn": "Album Name",
-      "releaseYearColumn": "Release Year",
       "noData": "No Data Found.",
       "showing": "Showing",
       "to": "to",
       "of": "of",
       "entries": "entries"
+    },
+    "button": {
+      "add": "Add",
+      "delete": "Delete",
+      "update": "Update",
+      "cancel": "Cancel",
+      "save": "Save"
+    },
+    "track": {
+      "table": {
+        "trackNameColumn": "Track Name",
+        "artistNameColumn": "Artist Name",
+        "albumNameColumn": "Album Name",
+        "releaseYearColumn": "Release Year"
+      },
+      "title": {
+        "delete": "Are you absolutely sure?"
+      },
+      "description": {
+        "delete": "This will permanently delete {count} track(s)."
+      },
+      "message": {
+        "addTrackSuccess": "Track added successfully!",
+        "duplicateTrack": "Duplicate tracks found:",
+        "unexpectedError": "An unexpected error occurred.",
+        "deleteTrackSuccess": "Track deleted successfully!"
+      }
+    },
+    "tag": {
+      "table": {
+        "tagNameColumn": "Tag Name",
+        "deprecatedColumn": "Deprecated",
+        "trackCountColumn": "Track Count"
+      },
+      "label": {
+        "tagName": "Name"
+      },
+      "title": {
+        "add": "Add New Tag",
+        "delete": "Are you absolutely sure?",
+        "update": "Update Tag"
+      },
+      "description": {
+        "add": "Enter a new tag name.",
+        "delete": "This will deactivate {count} tag(s).",
+        "update": "Modify the tag name."
+      },
+      "message": {
+        "addTagSuccess": "Tag added successfully!",
+        "unexpectedError": "An unexpected error occurred.",
+        "deleteTagSuccess": "Tag deleted successfully!",
+        "updateTagSuccess": "Tag updated successfully!"
+      }
     }
   }
 }

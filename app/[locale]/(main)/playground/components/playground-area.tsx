@@ -6,40 +6,41 @@ import { useQuery } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 
-import { TrackData } from "@/types/ytmusic.type";
-import { Artist } from "@/types/ytmusic.type";
+import { ArtistType, TagType, TrackType } from "@/types/ytmusic.type";
 
 import { GameArea } from "./game-area";
 import { SelectArtistsCard } from "./select-artists-card";
 import { SelectTagsCard } from "./select-tags-card";
 
 function PlaygroundArea() {
-  const [selectedArtists, setSelectedArtists] = useState<Artist[]>([]);
-  const [playlist, setPlaylist] = useState<TrackData[]>([]);
-  const [currentTrack, setCurrentTrack] = useState<TrackData | null>(null);
+  const [selectedArtists, setSelectedArtists] = useState<ArtistType[]>([]);
+  const [selectedTags, setSelectedTags] = useState<TagType[]>([]);
+  const [playlist, setPlaylist] = useState<TrackType[]>([]);
+  const [currentTrack, setCurrentTrack] = useState<TrackType | null>(null);
   const [playedIds, setPlayedIds] = useState<Set<string>>(new Set());
   const artistIdsString = selectedArtists.map((a) => a.id).join("!@!");
+  const tagIdsString = selectedTags.map((t) => t.id).join("!@!");
   const t = useTranslations("playground");
 
-  // Reset game state when artists change
+  // Reset game state when artists or tags change
   useEffect(() => {
     setPlaylist([]);
     setCurrentTrack(null);
     setPlayedIds(new Set());
-  }, [selectedArtists]);
+  }, [selectedArtists, selectedTags]);
 
   // 根據所選歌手取得歌曲
   const { refetch, isFetching } = useQuery({
-    queryKey: ["game-tracks", artistIdsString],
+    queryKey: ["game-tracks", artistIdsString, tagIdsString],
     queryFn: async () => {
-      const response = await fetch(`/api/ytmusic/tracks?artistIds=${artistIdsString}`);
+      const response = await fetch(`/api/ytmusic/tracks?artistIds=${artistIdsString}&tagIds=${tagIdsString}`);
 
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.error);
       }
 
-      return response.json() as Promise<TrackData[]>;
+      return response.json() as Promise<TrackType[]>;
     },
     enabled: false,
     retry: false,
@@ -60,8 +61,8 @@ function PlaygroundArea() {
 
   // 播放下一首歌曲
   const handleNextTrack = async () => {
-    if (selectedArtists.length === 0) {
-      toast.warning("Please select at least one artist.", {
+    if (selectedArtists.length === 0 && selectedTags.length === 0) {
+      toast.warning("Please select at least one artist or tag.", {
         position: "top-center",
         duration: 3000,
       });
@@ -84,7 +85,7 @@ function PlaygroundArea() {
     // 2. Playlist is empty.
     // If we have already played some songs, it means we have exhausted the previous fetch.
     if (playedIds.size > 0) {
-      toast.warning("No more songs available for selected artists.", {
+      toast.warning("No more songs available for selected artists/tags.", {
         position: "top-center",
         duration: 3000,
       });
@@ -102,7 +103,7 @@ function PlaygroundArea() {
         const newTracks = tracks.filter((track) => !playedIds.has(track.video_id));
 
         if (newTracks.length === 0) {
-          toast.warning("No songs found for these artists.", {
+          toast.warning("No songs found for these artists/tags.", {
             position: "top-center",
             duration: 3000,
           });
@@ -137,7 +138,7 @@ function PlaygroundArea() {
       <GameArea currentTrack={currentTrack} onNext={handleNextTrack} />
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         <SelectArtistsCard selectedArtists={selectedArtists} setSelectedArtists={setSelectedArtists} />
-        <SelectTagsCard />
+        <SelectTagsCard selectedTags={selectedTags} setSelectedTags={setSelectedTags} />
       </div>
       {isFetching && <div className="text-muted-foreground text-center text-sm">{t("loadingTracks")}</div>}
     </div>

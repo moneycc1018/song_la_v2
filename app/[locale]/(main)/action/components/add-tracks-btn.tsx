@@ -3,6 +3,7 @@
 import { useTransition } from "react";
 
 import { CirclePlusIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 
 import { createTracks } from "@/actions/ytmusic.action";
@@ -21,6 +22,7 @@ interface AddTracksButtonProps {
 function AddTracksButton(props: AddTracksButtonProps) {
   const { selectedTracks, onSuccess } = props;
   const [isPending, startTransition] = useTransition();
+  const t = useTranslations("action");
 
   // 加入歌曲
   function handleAdd() {
@@ -31,14 +33,14 @@ function AddTracksButton(props: AddTracksButtonProps) {
         const result = await createTracks(selectedTracks);
 
         if (result.success) {
-          toast.success("Tracks added successfully!", {
+          toast.success(t("track.message.addTrackSuccess"), {
             position: "top-center",
             duration: 3000,
           });
           onSuccess(); // 通知父元件清空選擇
         } else {
           if (result.duplicates && result.duplicates.length > 0) {
-            toast.warning(`Duplicate tracks found: ${result.duplicates.join(", ")}`, {
+            toast.warning(`${t("track.message.duplicateTrack")} ${result.duplicates.join(", ")}`, {
               position: "top-center",
               duration: 3000,
             });
@@ -51,7 +53,7 @@ function AddTracksButton(props: AddTracksButtonProps) {
         }
       } catch (error) {
         console.error(error);
-        toast.error("An unexpected error occurred.", {
+        toast.error(t("track.message.unexpectedError"), {
           position: "top-center",
           duration: 3000,
         });
@@ -62,7 +64,7 @@ function AddTracksButton(props: AddTracksButtonProps) {
   return (
     <Button variant="outline" className="cursor-pointer" onClick={handleAdd} disabled={isPending}>
       {isPending ? <Spinner /> : <CirclePlusIcon />}
-      <span>Add</span>
+      <span>{t("button.add")}</span>
     </Button>
   );
 }
