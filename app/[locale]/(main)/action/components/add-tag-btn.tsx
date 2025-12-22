@@ -4,7 +4,6 @@ import { useState, useTransition } from "react";
 
 import { CirclePlusIcon, SaveIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { toast } from "sonner";
 
 import { createTag } from "@/actions/ytmusic.action";
 
@@ -22,6 +21,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
+import { toast } from "@/lib/toast";
+
 interface AddTagButtonProps {
   onSuccess: () => void;
 }
@@ -35,11 +36,7 @@ function AddTagButton(props: AddTagButtonProps) {
 
   function handleAdd() {
     if (!tagName.trim()) {
-      toast.warning("Please enter a tag name.", {
-        position: "top-center",
-        duration: 3000,
-      });
-
+      toast("warning", "Please enter a tag name.");
       return;
     }
 
@@ -48,25 +45,16 @@ function AddTagButton(props: AddTagButtonProps) {
         const result = await createTag(tagName.trim());
 
         if (result.success) {
-          toast.success(t("tag.message.addTagSuccess"), {
-            position: "top-center",
-            duration: 3000,
-          });
+          toast("success", t("tag.message.addTagSuccess"));
           setOpen(false);
           setTagName("");
           onSuccess();
         } else {
-          toast.error(result.error, {
-            position: "top-center",
-            duration: 3000,
-          });
+          toast("error", result.error);
         }
       } catch (error) {
         console.error(error);
-        toast.error(t("tag.message.unexpectedError"), {
-          position: "top-center",
-          duration: 3000,
-        });
+        toast("error", t("tag.message.unexpectedError"));
       }
     });
   }

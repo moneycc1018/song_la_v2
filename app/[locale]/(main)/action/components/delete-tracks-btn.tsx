@@ -4,7 +4,6 @@ import { useTransition } from "react";
 
 import { CircleMinusIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { toast } from "sonner";
 
 import { deleteTracks } from "@/actions/ytmusic.action";
 
@@ -23,6 +22,8 @@ import {
 import { Button } from "@/components/ui/button";
 
 import { SearchDataType } from "@/types/ytmusic.type";
+
+import { toast } from "@/lib/toast";
 
 interface DeleteTracksButtonProps {
   selectedTracks: SearchDataType[];
@@ -46,23 +47,14 @@ function DeleteTracksButton(props: DeleteTracksButtonProps) {
         const result = await deleteTracks(selectedVideoIds);
 
         if (result.success) {
-          toast.success(t("track.message.deleteTrackSuccess"), {
-            position: "top-center",
-            duration: 3000,
-          });
+          toast("success", t("track.message.deleteTracksSuccess"));
           onSuccess();
         } else {
-          toast.success(result.error, {
-            position: "top-center",
-            duration: 3000,
-          });
+          toast("error", result.error);
         }
       } catch (error) {
         console.error(error);
-        toast.success(t("track.message.unexpectedError"), {
-          position: "top-center",
-          duration: 3000,
-        });
+        toast("error", t("track.message.unexpectedError"));
       }
     });
   }
@@ -77,7 +69,7 @@ function DeleteTracksButton(props: DeleteTracksButtonProps) {
           </span>
         </Button>
       </AlertDialogTrigger>
-      <AlertDialogContent>
+      <AlertDialogContent className="sm:max-w-80">
         <AlertDialogHeader>
           <AlertDialogTitle>{t("track.title.delete")}</AlertDialogTitle>
           <AlertDialogDescription>

@@ -10,7 +10,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
   return (
     <Sonner
       theme={theme as ToasterProps["theme"]}
-      className="rounded-md"
+      className="rounded-md text-base"
       icons={{
         success: <CircleCheckIcon className="text-custom-green-500 size-4" />,
         info: <InfoIcon className="text-custom-blue-500 size-4" />,

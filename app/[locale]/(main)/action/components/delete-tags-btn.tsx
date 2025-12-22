@@ -4,7 +4,6 @@ import { useTransition } from "react";
 
 import { TrashIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { toast } from "sonner";
 
 import { deleteTags } from "@/actions/ytmusic.action";
 
@@ -23,6 +22,8 @@ import {
 import { Button } from "@/components/ui/button";
 
 import { TagType } from "@/types/ytmusic.type";
+
+import { toast } from "@/lib/toast";
 
 interface DeleteTagsButtonProps {
   selectedTags: TagType[];
@@ -43,23 +44,14 @@ function DeleteTagsButton(props: DeleteTagsButtonProps) {
         const result = await deleteTags(tagIds);
 
         if (result.success) {
-          toast.success(t("tag.message.deleteTagSuccess"), {
-            position: "top-center",
-            duration: 3000,
-          });
+          toast("success", t("tag.message.deleteTagsSuccess"));
           onSuccess();
         } else {
-          toast.error(result.error, {
-            position: "top-center",
-            duration: 3000,
-          });
+          toast("error", result.error);
         }
       } catch (error) {
         console.error(error);
-        toast.error(t("tag.message.unexpectedError"), {
-          position: "top-center",
-          duration: 3000,
-        });
+        toast("error", t("tag.message.unexpectedError"));
       }
     });
   }

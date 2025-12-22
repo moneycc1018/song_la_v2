@@ -27,6 +27,12 @@
       "placeholder": "標籤名",
       "selectAll": "選擇全部",
       "removeAll": "移除全部"
+    },
+    "message": {
+      "message1": "請至少選擇一個歌手或標籤",
+      "message2": "所選歌手/標籤的歌曲已播完",
+      "message3": "查無與所選歌手/標籤相關的歌曲",
+      "unexpectedError": "發生未預期的錯誤"
     }
   },
   "action": {
@@ -54,19 +60,23 @@
         "trackNameColumn": "歌名",
         "artistNameColumn": "歌手名",
         "albumNameColumn": "專輯名",
-        "releaseYearColumn": "發行年份"
+        "releaseYearColumn": "發行年份",
+        "tagsColumn": "標籤"
       },
       "title": {
-        "delete": "確定要刪除嗎？"
+        "delete": "確定要刪除嗎？",
+        "manageTags": "管理標籤"
       },
       "description": {
-        "delete": "這將永久刪除 {count} 首歌曲"
+        "delete": "這將永久刪除 {count} 首歌曲",
+        "manageTags": "選擇此歌曲的標籤，點擊切換。"
       },
       "message": {
-        "addTrackSuccess": "歌曲新增成功！",
-        "duplicateTrack": "發現重複歌曲",
-        "unexpectedError": "未預期的錯誤發生",
-        "deleteTrackSuccess": "歌曲刪除成功！"
+        "addTracksSuccess": "歌曲新增成功！",
+        "duplicateTracks": "發現重複歌曲：",
+        "unexpectedError": "發生未預期的錯誤",
+        "deleteTracksSuccess": "歌曲刪除成功！",
+        "updateTagsSuccess": "標籤更新成功！"
       }
     },
     "tag": {
@@ -90,8 +100,8 @@
       },
       "message": {
         "addTagSuccess": "標籤新增成功！",
-        "unexpectedError": "未預期的錯誤發生",
-        "deleteTagSuccess": "標籤刪除成功！",
+        "unexpectedError": "發生未預期的錯誤",
+        "deleteTagsSuccess": "標籤刪除成功！",
         "updateTagSuccess": "標籤更新成功！"
       }
     }

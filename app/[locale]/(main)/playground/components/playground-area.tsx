@@ -4,9 +4,10 @@ import { useEffect, useState } from "react";
 
 import { useQuery } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
-import { toast } from "sonner";
 
 import { ArtistType, TagType, TrackType } from "@/types/ytmusic.type";
+
+import { toast } from "@/lib/toast";
 
 import { GameArea } from "./game-area";
 import { SelectArtistsCard } from "./select-artists-card";
@@ -62,11 +63,7 @@ function PlaygroundArea() {
   // 播放下一首歌曲
   const handleNextTrack = async () => {
     if (selectedArtists.length === 0 && selectedTags.length === 0) {
-      toast.warning("Please select at least one artist or tag.", {
-        position: "top-center",
-        duration: 3000,
-      });
-
+      toast("warning", t("message.message1"));
       return;
     }
 
@@ -85,10 +82,7 @@ function PlaygroundArea() {
     // 2. Playlist is empty.
     // If we have already played some songs, it means we have exhausted the previous fetch.
     if (playedIds.size > 0) {
-      toast.warning("No more songs available for selected artists/tags.", {
-        position: "top-center",
-        duration: 3000,
-      });
+      toast("warning", t("message.message2"));
       setCurrentTrack(null);
 
       return;
@@ -103,10 +97,7 @@ function PlaygroundArea() {
         const newTracks = tracks.filter((track) => !playedIds.has(track.video_id));
 
         if (newTracks.length === 0) {
-          toast.warning("No songs found for these artists/tags.", {
-            position: "top-center",
-            duration: 3000,
-          });
+          toast("warning", t("message.message3"));
           setCurrentTrack(null);
         } else {
           const shuffled = shuffleArray(newTracks);
@@ -119,17 +110,11 @@ function PlaygroundArea() {
           setPlayedIds((prev) => new Set(prev).add(nextTrack.video_id));
         }
       } else if (isError) {
-        toast.error(error.message, {
-          position: "top-center",
-          duration: 3000,
-        });
+        toast("error", error.message);
       }
     } catch (error) {
       console.error(error);
-      toast.error("An unexpected error occurred.", {
-        position: "top-center",
-        duration: 3000,
-      });
+      toast("error", t("message.unexpectedError"));
     }
   };
 

@@ -27,6 +27,12 @@
       "placeholder": "Tag Name",
       "selectAll": "Select All",
       "removeAll": "Remove All"
+    },
+    "message": {
+      "message1": "Please select at least one artist or tag.",
+      "message2": "No more songs available for selected artists/tags.",
+      "message3": "No songs found for these artists/tags.",
+      "unexpectedError": "An unexpected error occurred."
     }
   },
   "action": {
@@ -54,19 +60,23 @@
         "trackNameColumn": "Track Name",
         "artistNameColumn": "Artist Name",
         "albumNameColumn": "Album Name",
-        "releaseYearColumn": "Release Year"
+        "releaseYearColumn": "Release Year",
+        "tagsColumn": "Tags"
       },
       "title": {
-        "delete": "Are you absolutely sure?"
+        "delete": "Are you absolutely sure?",
+        "manageTags": "Manage Tags"
       },
       "description": {
-        "delete": "This will permanently delete {count} track(s)."
+        "delete": "This will permanently delete {count} track(s).",
+        "manageTags": "Select tags for this track. Click to toggle."
       },
       "message": {
-        "addTrackSuccess": "Track added successfully!",
-        "duplicateTrack": "Duplicate tracks found:",
+        "addTracksSuccess": "Track added successfully!",
+        "duplicateTracks": "Duplicate tracks found:",
         "unexpectedError": "An unexpected error occurred.",
-        "deleteTrackSuccess": "Track deleted successfully!"
+        "deleteTracksSuccess": "Track deleted successfully!",
+        "updateTagsSuccess": "Tags updated successfully!"
       }
     },
     "tag": {
@@ -91,7 +101,7 @@
       "message": {
         "addTagSuccess": "Tag added successfully!",
         "unexpectedError": "An unexpected error occurred.",
-        "deleteTagSuccess": "Tag deleted successfully!",
+        "deleteTagsSuccess": "Tags deleted successfully!",
         "updateTagSuccess": "Tag updated successfully!"
       }
     }

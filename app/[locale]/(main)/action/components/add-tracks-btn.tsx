@@ -4,7 +4,6 @@ import { useTransition } from "react";
 
 import { CirclePlusIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { toast } from "sonner";
 
 import { createTracks } from "@/actions/ytmusic.action";
 
@@ -12,6 +11,8 @@ import { Spinner } from "@/components/spinner";
 import { Button } from "@/components/ui/button";
 
 import { SearchDataType } from "@/types/ytmusic.type";
+
+import { toast } from "@/lib/toast";
 
 interface AddTracksButtonProps {
   selectedTracks: SearchDataType[];
@@ -33,30 +34,18 @@ function AddTracksButton(props: AddTracksButtonProps) {
         const result = await createTracks(selectedTracks);
 
         if (result.success) {
-          toast.success(t("track.message.addTrackSuccess"), {
-            position: "top-center",
-            duration: 3000,
-          });
+          toast("success", t("track.message.addTracksSuccess"));
           onSuccess(); // 通知父元件清空選擇
         } else {
           if (result.duplicates && result.duplicates.length > 0) {
-            toast.warning(`${t("track.message.duplicateTrack")} ${result.duplicates.join(", ")}`, {
-              position: "top-center",
-              duration: 3000,
-            });
+            toast("warning", `${t("track.message.duplicateTracks")} ${result.duplicates.join(", ")}`);
           } else {
-            toast.error(result.error, {
-              position: "top-center",
-              duration: 3000,
-            });
+            toast("error", result.error);
           }
         }
       } catch (error) {
         console.error(error);
-        toast.error(t("track.message.unexpectedError"), {
-          position: "top-center",
-          duration: 3000,
-        });
+        toast("error", t("track.message.unexpectedError"));
       }
     });
   }

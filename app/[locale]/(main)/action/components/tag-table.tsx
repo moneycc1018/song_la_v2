@@ -81,8 +81,8 @@ function TagTable(props: TagTableProps) {
               </TableHead>
               <TableHead className="w-8">#</TableHead>
               <TableHead>{t("tag.table.tagNameColumn")}</TableHead>
-              <TableHead className="w-20">{t("tag.table.deprecatedColumn")}</TableHead>
-              <TableHead className="w-20">{t("tag.table.trackCountColumn")}</TableHead>
+              <TableHead className="w-28">{t("tag.table.deprecatedColumn")}</TableHead>
+              <TableHead className="w-24">{t("tag.table.trackCountColumn")}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>

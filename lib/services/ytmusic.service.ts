@@ -24,7 +24,7 @@ const mapDbToTrackData = (dbTrack: any): TrackType => {
     },
     release_year: dbTrack.release_year ?? undefined,
     tags: dbTrack.ytmusic_track_tags.map((tt: any) => ({
-      id: tt.ytmusic_tags.tag_id,
+      id: tt.ytmusic_tags.id,
       name: tt.ytmusic_tags.tag_name,
     })),
     lyrics: dbTrack.lyrics ?? undefined,
@@ -153,9 +153,7 @@ export async function getTracks(query?: string) {
       },
     },
     where: whereClause,
-    orderBy: {
-      release_year: "desc",
-    },
+    orderBy: [{ release_year: "desc" }, { track_name: "asc" }],
   });
   return tracks.map(mapDbToTrackData);
 }

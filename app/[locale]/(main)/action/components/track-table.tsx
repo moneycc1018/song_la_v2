@@ -4,11 +4,12 @@ import { useEffect, useState } from "react";
 
 import { useTranslations } from "next-intl";
 
+import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
-import { SearchDataType } from "@/types/ytmusic.type";
+import { SearchDataType, TrackType } from "@/types/ytmusic.type";
 
 import { CustomPagination } from "./custom-pagination";
 
@@ -17,6 +18,7 @@ interface TrackTableProps {
   selectedTracks: SearchDataType[];
   setSelectedTracks: React.Dispatch<React.SetStateAction<SearchDataType[]>>;
   searchType?: string;
+  onRefresh?: () => void;
 }
 
 // 歌曲列表
@@ -79,14 +81,19 @@ function TrackTable(props: TrackTableProps) {
       <ScrollArea className="w-full">
         <Table className="mb-3 w-full table-fixed">
           <TableHeader>
-            <TableRow>
+            <TableRow onClick={handleSelectAll}>
               <TableHead className="w-8">
-                <Checkbox checked={isAllSelected} onCheckedChange={handleSelectAll} />
+                <Checkbox
+                  checked={isAllSelected}
+                  onCheckedChange={handleSelectAll}
+                  onClick={(e) => e.stopPropagation()}
+                />
               </TableHead>
               <TableHead className="w-60">{t("track.table.trackNameColumn")}</TableHead>
               <TableHead className="w-40">{t("track.table.albumNameColumn")}</TableHead>
               <TableHead className="w-40">{t("track.table.artistNameColumn")}</TableHead>
               <TableHead className="w-28">{t("track.table.releaseYearColumn")}</TableHead>
+              {isDbMode && <TableHead className="w-40">{t("track.table.tagsColumn")}</TableHead>}
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -94,15 +101,21 @@ function TrackTable(props: TrackTableProps) {
               <>
                 {currentData.map((track) => {
                   const isSelected = selectedTracks.some((selected) => selected.video_id === track.video_id); // 檢查該列是否已被選取
+                  const trackWithTags = track as TrackType;
 
                   return (
                     <TableRow
                       key={track.video_id}
                       data-state={isSelected ? "selected" : undefined}
                       className="h-[41px]"
+                      onClick={() => handleSelectOne(track)}
                     >
                       <TableCell>
-                        <Checkbox checked={isSelected} onCheckedChange={() => handleSelectOne(track)} />
+                        <Checkbox
+                          checked={isSelected}
+                          onCheckedChange={() => handleSelectOne(track)}
+                          onClick={(e) => e.stopPropagation()}
+                        />
                       </TableCell>
                       <TableCell className="truncate">{track.track_name}</TableCell>
                       <TableCell className="truncate">{track.album.name}</TableCell>
@@ -110,6 +123,15 @@ function TrackTable(props: TrackTableProps) {
                         {track.artists.map((artist) => artist.name).join(", ")}
                       </TableCell>
                       <TableCell>{track.release_year}</TableCell>
+                      {isDbMode && (
+                        <TableCell>
+                          <div className="flex flex-wrap gap-1">
+                            {trackWithTags.tags?.map((tag) => (
+                              <Badge key={`${track.video_id}-${tag.id}`}>{tag.name}</Badge>
+                            ))}
+                          </div>
+                        </TableCell>
+                      )}
                     </TableRow>
                   );
                 })}
@@ -117,13 +139,13 @@ function TrackTable(props: TrackTableProps) {
                   isDbMode &&
                   Array.from({ length: Math.max(0, itemsPerPage - currentData.length) }).map((_, index) => (
                     <TableRow key={`empty-${index}`} className="h-[41px] border-b-0">
-                      <TableCell colSpan={5}>&nbsp;</TableCell>
+                      <TableCell colSpan={isDbMode ? 6 : 5}>&nbsp;</TableCell>
                     </TableRow>
                   ))}
               </>
             ) : (
               <TableRow>
-                <TableCell colSpan={5} className="h-24 text-center">
+                <TableCell colSpan={isDbMode ? 6 : 5} className="h-24 text-center">
                   {t("table.noData")}
                 </TableCell>
               </TableRow>

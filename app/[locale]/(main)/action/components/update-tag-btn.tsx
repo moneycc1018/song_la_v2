@@ -4,7 +4,6 @@ import { useEffect, useState, useTransition } from "react";
 
 import { PencilIcon, SaveIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { toast } from "sonner";
 
 import { updateTag } from "@/actions/ytmusic.action";
 
@@ -23,6 +22,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 import { TagType } from "@/types/ytmusic.type";
+
+import { toast } from "@/lib/toast";
 
 interface UpdateTagButtonProps {
   selectedTag: TagType;
@@ -44,11 +45,7 @@ function UpdateTagButton(props: UpdateTagButtonProps) {
 
   function handleUpdate() {
     if (!tagName.trim()) {
-      toast.warning("Please enter a tag name.", {
-        position: "top-center",
-        duration: 3000,
-      });
-
+      toast("warning", "Please enter a tag name.");
       return;
     }
 
@@ -62,24 +59,15 @@ function UpdateTagButton(props: UpdateTagButtonProps) {
         const result = await updateTag(selectedTag.id, tagName.trim());
 
         if (result.success) {
-          toast.success(t("tag.message.updateTagSuccess"), {
-            position: "top-center",
-            duration: 3000,
-          });
+          toast("success", t("tag.message.updateTagSuccess"));
           setOpen(false);
           onSuccess();
         } else {
-          toast.error(result.error, {
-            position: "top-center",
-            duration: 3000,
-          });
+          toast("error", result.error);
         }
       } catch (error) {
         console.error(error);
-        toast.error(t("tag.message.unexpectedError"), {
-          position: "top-center",
-          duration: 3000,
-        });
+        toast("error", t("tag.message.unexpectedError"));
       }
     });
   }

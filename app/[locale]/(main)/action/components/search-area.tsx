@@ -20,6 +20,7 @@ import { DeleteTracksButton } from "./delete-tracks-btn";
 import { TagTable } from "./tag-table";
 import { TrackTable } from "./track-table";
 import { UpdateTagButton } from "./update-tag-btn";
+import { UpdateTrackTagsButton } from "./update-track-tags-btn";
 
 // 搜尋區域
 function SearchArea() {
@@ -115,7 +116,6 @@ function SearchArea() {
         </Button>
       </div>
       {isError && <p>{error?.message}</p>}
-
       {queryResult && (
         <>
           {isTagMode ? (
@@ -126,11 +126,11 @@ function SearchArea() {
               selectedTracks={selectedTracks}
               setSelectedTracks={setSelectedTracks}
               searchType={searchType}
+              onRefresh={refetch}
             />
           )}
         </>
       )}
-
       {/* Buttons Area */}
       <div className="flex justify-end gap-2">
         {selectedTracks.length > 0 && searchType === "yt" && (
@@ -139,6 +139,15 @@ function SearchArea() {
         {selectedTracks.length > 0 && searchType === "db_track" && (
           <DeleteTracksButton
             selectedTracks={selectedTracks}
+            onSuccess={() => {
+              setSelectedTracks([]);
+              refetch();
+            }}
+          />
+        )}
+        {selectedTracks.length === 1 && searchType === "db_track" && (
+          <UpdateTrackTagsButton
+            selectedTrack={selectedTracks[0]}
             onSuccess={() => {
               setSelectedTracks([]);
               refetch();
