@@ -61,12 +61,18 @@ export async function GET(request: NextRequest) {
         // Process Lyrics
         const lyrics = lyricsData?.description?.text;
 
-        // Process Release Year
+        // Process Release Year & Album Name
         let release_year: number | undefined;
+        let album_name = basicData.album.name;
+
         if (albumData) {
           const subtitleRuns = albumData.header?.subtitle?.runs || [];
           const yearStr = subtitleRuns.find((run: any) => /^\d{4}$/.test(run.text))?.text;
           if (yearStr) release_year = parseInt(yearStr, 10);
+
+          if (albumData.header?.title?.text) {
+            album_name = albumData.header.title.text;
+          }
         }
 
         // Process Artists Names
@@ -80,6 +86,10 @@ export async function GET(request: NextRequest) {
 
         return {
           ...basicData,
+          album: {
+            ...basicData.album,
+            name: album_name,
+          },
           artists: enrichedArtists,
           release_year,
           lyrics,
