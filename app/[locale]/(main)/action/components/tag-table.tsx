@@ -71,18 +71,21 @@ function TagTable(props: TagTableProps) {
   }
 
   return (
-    <div className="w-full max-w-[400px] self-center">
+    <div className="w-full">
       <ScrollArea className="w-full">
         <Table className="mb-3 w-full table-fixed">
           <TableHeader>
-            <TableRow>
+            <TableRow onClick={handleSelectAll}>
               <TableHead className="w-8">
-                <Checkbox checked={isAllSelected} onCheckedChange={handleSelectAll} />
+                <Checkbox
+                  checked={isAllSelected}
+                  onCheckedChange={handleSelectAll}
+                  onClick={(e) => e.stopPropagation()}
+                />
               </TableHead>
-              <TableHead className="w-8">#</TableHead>
-              <TableHead>{t("tag.table.tagNameColumn")}</TableHead>
-              <TableHead className="w-28">{t("tag.table.deprecatedColumn")}</TableHead>
-              <TableHead className="w-24">{t("tag.table.trackCountColumn")}</TableHead>
+              <TableHead className="w-60 md:w-full">{t("tag.table.tagNameColumn")}</TableHead>
+              <TableHead className="w-32">{t("tag.table.deprecatedColumn")}</TableHead>
+              <TableHead className="w-32">{t("tag.table.trackCountColumn")}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -92,11 +95,19 @@ function TagTable(props: TagTableProps) {
                   const isSelected = selectedTags.some((selected) => selected.id === tag.id);
 
                   return (
-                    <TableRow key={tag.id} data-state={isSelected ? "selected" : undefined} className="h-[41px]">
+                    <TableRow
+                      key={tag.id}
+                      data-state={isSelected ? "selected" : undefined}
+                      className="h-[41px]"
+                      onClick={() => handleSelectOne(tag)}
+                    >
                       <TableCell>
-                        <Checkbox checked={isSelected} onCheckedChange={() => handleSelectOne(tag)} />
+                        <Checkbox
+                          checked={isSelected}
+                          onCheckedChange={() => handleSelectOne(tag)}
+                          onClick={(e) => e.stopPropagation()}
+                        />
                       </TableCell>
-                      <TableCell>{tag.id}</TableCell>
                       <TableCell className="truncate">{tag.name}</TableCell>
                       <TableCell>{tag.deprecated ? "Y" : "N"}</TableCell>
                       <TableCell className="text-right">{tag.track_count}</TableCell>

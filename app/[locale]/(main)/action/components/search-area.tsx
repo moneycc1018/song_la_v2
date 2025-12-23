@@ -21,6 +21,7 @@ import { TagTable } from "./tag-table";
 import { TrackTable } from "./track-table";
 import { UpdateTagButton } from "./update-tag-btn";
 import { UpdateTrackTagsButton } from "./update-track-tags-btn";
+import { UpdateTracksTagsButton } from "./update-tracks-tags-btn";
 
 // 搜尋區域
 function SearchArea() {
@@ -136,8 +137,17 @@ function SearchArea() {
         {selectedTracks.length > 0 && searchType === "yt" && (
           <AddTracksButton selectedTracks={selectedTracks} onSuccess={() => setSelectedTracks([])} />
         )}
-        {selectedTracks.length > 0 && searchType === "db_track" && (
-          <DeleteTracksButton
+        {selectedTracks.length === 1 && searchType === "db_track" && (
+          <UpdateTrackTagsButton
+            selectedTrack={selectedTracks[0]}
+            onSuccess={() => {
+              setSelectedTracks([]);
+              refetch();
+            }}
+          />
+        )}
+        {selectedTracks.length > 1 && searchType === "db_track" && (
+          <UpdateTracksTagsButton
             selectedTracks={selectedTracks}
             onSuccess={() => {
               setSelectedTracks([]);
@@ -145,9 +155,9 @@ function SearchArea() {
             }}
           />
         )}
-        {selectedTracks.length === 1 && searchType === "db_track" && (
-          <UpdateTrackTagsButton
-            selectedTrack={selectedTracks[0]}
+        {selectedTracks.length > 0 && searchType === "db_track" && (
+          <DeleteTracksButton
+            selectedTracks={selectedTracks}
             onSuccess={() => {
               setSelectedTracks([]);
               refetch();

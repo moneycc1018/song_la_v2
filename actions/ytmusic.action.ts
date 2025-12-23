@@ -16,7 +16,7 @@ async function checkAdmin() {
   }
 }
 
-// 新增歌曲
+// 批量新增歌曲
 export async function createTracks(data: CreateTrackInput[]) {
   try {
     await checkAdmin();
@@ -25,7 +25,6 @@ export async function createTracks(data: CreateTrackInput[]) {
     if (result.duplicates.length > 0) {
       return {
         success: false,
-        error: "Duplicate tracks found",
         duplicates: result.duplicates,
       };
     }
@@ -40,7 +39,7 @@ export async function createTracks(data: CreateTrackInput[]) {
   }
 }
 
-// 更新歌曲標籤
+// 批量更新歌曲標籤
 export async function updateTracksTags(data: UpdateTrackTagsInput[]) {
   try {
     await checkAdmin();
@@ -56,7 +55,7 @@ export async function updateTracksTags(data: UpdateTrackTagsInput[]) {
   }
 }
 
-// 移除歌曲
+// 批量移除歌曲
 export async function deleteTracks(videoIds: string[]) {
   try {
     await checkAdmin();
@@ -78,17 +77,17 @@ export async function createTag(tagName: string) {
     await checkAdmin();
     const result = await ytmusicService.createTag(tagName);
 
-    if (!result.success) {
-      return { success: false, error: result.error };
+    if (result.duplicate) {
+      return { success: false, duplicate: result.duplicate };
     }
 
-    return { success: true, data: result.data };
+    return { success: true, data: result.created };
   } catch (error) {
     console.error("Failed to create tag:", error);
     if (error instanceof Error && error.message.includes("Unauthorized")) {
       return { success: false, error: error.message };
     }
-    return { success: false, error: "Failed to create tag" };
+    return { success: false, error: error instanceof Error ? error.message : "Failed to create tag" };
   }
 }
 
@@ -98,29 +97,25 @@ export async function updateTag(tagId: number, tagName: string) {
     await checkAdmin();
     const result = await ytmusicService.updateTag(tagId, tagName);
 
-    if (!result.success) {
-      return { success: false, error: result.error };
+    if (result.duplicate) {
+      return { success: false, duplicate: result.duplicate };
     }
 
-    return { success: true, data: result.data };
+    return { success: true, data: result.updated };
   } catch (error) {
     console.error("Failed to update tag:", error);
     if (error instanceof Error && error.message.includes("Unauthorized")) {
       return { success: false, error: error.message };
     }
-    return { success: false, error: "Failed to update tag" };
+    return { success: false, error: error instanceof Error ? error.message : "Failed to update tag" };
   }
 }
 
-// 批量刪除標籤
+// 批量刪除標籤(棄用)
 export async function deleteTags(tagIds: number[]) {
   try {
     await checkAdmin();
-    const result = await ytmusicService.deleteTags(tagIds);
-
-    if (!result.success) {
-      return { success: false, error: "Failed to delete tags" };
-    }
+    await ytmusicService.deleteTags(tagIds);
 
     return { success: true };
   } catch (error) {

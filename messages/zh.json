@@ -29,10 +29,10 @@
       "removeAll": "移除全部"
     },
     "message": {
-      "message1": "請至少選擇一個歌手或標籤",
-      "message2": "所選歌手/標籤的歌曲已播完",
-      "message3": "查無與所選歌手/標籤相關的歌曲",
-      "unexpectedError": "發生未預期的錯誤"
+      "message1": "請至少選擇一個歌手或標籤。",
+      "message2": "所選歌手/標籤的歌曲已播完。",
+      "message3": "查無與所選歌手/標籤相關的歌曲。",
+      "unexpectedError": "發生未預期的錯誤。"
     }
   },
   "action": {
@@ -68,13 +68,13 @@
         "manageTags": "管理標籤"
       },
       "description": {
-        "delete": "這將永久刪除 {count} 首歌曲",
+        "delete": "這將永久刪除 {count} 首歌曲。",
         "manageTags": "選擇此歌曲的標籤，點擊切換。"
       },
       "message": {
         "addTracksSuccess": "歌曲新增成功！",
         "duplicateTracks": "發現重複歌曲：",
-        "unexpectedError": "發生未預期的錯誤",
+        "unexpectedError": "發生未預期的錯誤。",
         "deleteTracksSuccess": "歌曲刪除成功！",
         "updateTagsSuccess": "標籤更新成功！"
       }
@@ -86,7 +86,8 @@
         "trackCountColumn": "歌曲數"
       },
       "label": {
-        "tagName": "標籤名"
+        "tagName": "標籤名",
+        "placeholder": "標籤名"
       },
       "title": {
         "add": "新增標籤",
@@ -94,15 +95,17 @@
         "update": "更新標籤"
       },
       "description": {
-        "add": "輸入一個新的標籤名",
-        "delete": "這將棄用 {count} 個標籤",
-        "update": "修改標籤名"
+        "add": "輸入一個新的標籤名。",
+        "delete": "這將棄用 {count} 個標籤。",
+        "update": "修改標籤名。"
       },
       "message": {
         "addTagSuccess": "標籤新增成功！",
-        "unexpectedError": "發生未預期的錯誤",
+        "unexpectedError": "發生未預期的錯誤。",
         "deleteTagsSuccess": "標籤刪除成功！",
-        "updateTagSuccess": "標籤更新成功！"
+        "updateTagSuccess": "標籤更新成功！",
+        "duplicateTag": "發現重複標籤：",
+        "message1": "請輸入標籤名。"
       }
     }
   }

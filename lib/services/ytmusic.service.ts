@@ -10,6 +10,7 @@ export interface UpdateTrackTagsInput {
   tags: number[];
 }
 
+// 將資料庫歌曲資料轉換為TrackType
 const mapDbToTrackData = (dbTrack: any): TrackType => {
   return {
     video_id: dbTrack.video_id,
@@ -31,13 +32,13 @@ const mapDbToTrackData = (dbTrack: any): TrackType => {
   };
 };
 
-// 新增歌曲
+// 批量新增歌曲
 export async function createTracks(
   dataList: CreateTrackInput[],
 ): Promise<{ created: TrackType[]; duplicates: string[] }> {
   const videoIds = dataList.map((d) => d.video_id);
 
-  // Check for duplicates
+  // 檢查是否有重複歌曲
   const existingTracks = await prisma.ytmusic_info.findMany({
     select: { video_id: true, track_name: true },
     where: {
@@ -52,18 +53,17 @@ export async function createTracks(
     };
   }
 
-  // Proceed with creation
+  // 新增歌曲
   return await prisma.$transaction(
     async (tx) => {
-      const results: TrackType[] = [];
+      const result: TrackType[] = [];
 
       for (const data of dataList) {
-        // 1. Create or ensure Artists exist
+        // 1. 新增或更新歌手
         for (const artist of data.artists) {
-          // Upsert artist
           await tx.ytmusic_artists.upsert({
             where: { artist_id: artist.id },
-            update: { artist_name: artist.name }, // Update name if changed
+            update: { artist_name: artist.name },
             create: {
               artist_id: artist.id,
               artist_name: artist.name,
@@ -71,8 +71,8 @@ export async function createTracks(
           });
         }
 
-        // 2. Create Track Info
-        const track = await tx.ytmusic_info.create({
+        // 2. 新增歌曲資訊
+        const newTrack = await tx.ytmusic_info.create({
           data: {
             video_id: data.video_id,
             track_name: data.track_name,
@@ -80,7 +80,7 @@ export async function createTracks(
             album_name: data.album.name,
             release_year: data.release_year,
             lyrics: data.lyrics,
-            // Create Artist Relations
+            // 3. 新增歌手與歌曲的關聯
             ytmusic_track_artists: {
               create: data.artists.map((artist) => ({
                 artist_id: artist.id,
@@ -97,9 +97,9 @@ export async function createTracks(
           },
         });
 
-        // Re-read to get full relation data including the just-added tags
+        // 取得完整的歌曲資訊
         const fullTrack = await tx.ytmusic_info.findUnique({
-          where: { video_id: track.video_id },
+          where: { video_id: newTrack.video_id },
           include: {
             ytmusic_track_artists: {
               include: { ytmusic_artists: true },
@@ -111,10 +111,11 @@ export async function createTracks(
         });
 
         if (fullTrack) {
-          results.push(mapDbToTrackData(fullTrack));
+          result.push(mapDbToTrackData(fullTrack));
         }
       }
-      return { created: results, duplicates: [] };
+
+      return { created: result, duplicates: [] };
     },
     {
       maxWait: 5000,
@@ -125,6 +126,7 @@ export async function createTracks(
 
 // 查詢歌曲
 export async function getTracks(query?: string) {
+  // 搜尋條件
   const whereClause = query
     ? {
         OR: [
@@ -143,6 +145,7 @@ export async function getTracks(query?: string) {
       }
     : {};
 
+  // 查詢歌曲
   const tracks = await prisma.ytmusic_info.findMany({
     include: {
       ytmusic_track_artists: {
@@ -155,13 +158,15 @@ export async function getTracks(query?: string) {
     where: whereClause,
     orderBy: [{ release_year: "desc" }, { track_name: "asc" }],
   });
+
   return tracks.map(mapDbToTrackData);
 }
 
-// Filter tracks by Artists AND Tags (Intersection)
+// 篩選歌曲(by artistIds, tagIds)
 export async function getGameTracks(artistIds: string[], tagIds: number[]) {
   const andConditions: any[] = [];
 
+  // 篩選條件(artistIds)
   if (artistIds.length > 0) {
     andConditions.push({
       ytmusic_track_artists: {
@@ -174,6 +179,7 @@ export async function getGameTracks(artistIds: string[], tagIds: number[]) {
     });
   }
 
+  // 篩選條件(tagIds)
   if (tagIds.length > 0) {
     andConditions.push({
       ytmusic_track_tags: {
@@ -184,6 +190,7 @@ export async function getGameTracks(artistIds: string[], tagIds: number[]) {
     });
   }
 
+  // 查詢歌曲
   const tracks = await prisma.ytmusic_info.findMany({
     where: andConditions.length > 0 ? { AND: andConditions } : {},
     include: {
@@ -199,20 +206,20 @@ export async function getGameTracks(artistIds: string[], tagIds: number[]) {
   return tracks.map(mapDbToTrackData);
 }
 
-// 更新歌曲標籤
+// 批量更新歌曲標籤
 export async function updateTracksTags(dataList: UpdateTrackTagsInput[]) {
   const updatedDate = new Date();
 
   return await prisma.$transaction(async (tx) => {
-    const results = [];
+    const result = [];
+
     for (const data of dataList) {
-      // 1. Delete existing tag relations
+      // 1. 刪除所有歌曲與標籤的關聯
       await tx.ytmusic_track_tags.deleteMany({
         where: { video_id: data.video_id },
       });
 
-      // 2. Create new relations
-      // Assuming data.tags are Tag IDs
+      // 2. 新增歌曲與標籤的關聯
       if (data.tags && data.tags.length > 0) {
         await tx.ytmusic_track_tags.createMany({
           data: data.tags.map((tagId) => ({
@@ -222,7 +229,7 @@ export async function updateTracksTags(dataList: UpdateTrackTagsInput[]) {
         });
       }
 
-      // 3. Update timestamp
+      // 3. 更新歌曲資訊的更新時間
       await tx.ytmusic_info.update({
         data: {
           updated_at: updatedDate,
@@ -230,8 +237,8 @@ export async function updateTracksTags(dataList: UpdateTrackTagsInput[]) {
         where: { video_id: data.video_id },
       });
 
-      // 4. Return updated track
-      const track = await tx.ytmusic_info.findUnique({
+      // 4. 取得完整的歌曲資訊
+      const fullTrack = await tx.ytmusic_info.findUnique({
         where: { video_id: data.video_id },
         include: {
           ytmusic_track_artists: {
@@ -243,15 +250,16 @@ export async function updateTracksTags(dataList: UpdateTrackTagsInput[]) {
         },
       });
 
-      if (track) {
-        results.push(mapDbToTrackData(track));
+      if (fullTrack) {
+        result.push(mapDbToTrackData(fullTrack));
       }
     }
-    return results;
+
+    return result;
   });
 }
 
-// 移除歌曲
+// 批量移除歌曲
 export async function deleteTracks(videoIds: string[]) {
   return await prisma.ytmusic_info.deleteMany({
     where: {
@@ -260,31 +268,6 @@ export async function deleteTracks(videoIds: string[]) {
       },
     },
   });
-}
-
-// 根據歌手 ID 列表查詢歌曲
-export async function getTracksByArtists(artistIds: string[]) {
-  const tracks = await prisma.ytmusic_info.findMany({
-    where: {
-      ytmusic_track_artists: {
-        some: {
-          artist_id: {
-            in: artistIds,
-          },
-        },
-      },
-    },
-    include: {
-      ytmusic_track_artists: {
-        include: { ytmusic_artists: true },
-      },
-      ytmusic_track_tags: {
-        include: { ytmusic_tags: true },
-      },
-    },
-  });
-
-  return tracks.map(mapDbToTrackData);
 }
 
 // 查詢歌手
@@ -318,9 +301,7 @@ export async function getAllTags() {
         },
       },
     },
-    orderBy: {
-      id: "asc",
-    },
+    orderBy: [{ deprecated: "asc" }, { tag_name: "asc" }],
   });
 
   return tags.map((t) => ({
@@ -333,33 +314,37 @@ export async function getAllTags() {
 
 // 新增標籤
 export async function createTag(tagName: string) {
+  // 檢查是否有重複標籤
   const existingTag = await prisma.ytmusic_tags.findUnique({
     where: { tag_name: tagName },
   });
 
   if (existingTag) {
-    return { success: false, error: "Tag already exists" };
+    return { duplicate: tagName };
   }
 
+  // 新增標籤
   const newTag = await prisma.ytmusic_tags.create({
     data: {
       tag_name: tagName,
     },
   });
 
-  return { success: true, data: { id: newTag.id, name: newTag.tag_name } };
+  return { created: { id: newTag.id, name: newTag.tag_name } };
 }
 
 // 更新標籤
 export async function updateTag(tagId: number, tagName: string) {
+  // 檢查是否有重複標籤
   const existingTag = await prisma.ytmusic_tags.findUnique({
     where: { tag_name: tagName },
   });
 
   if (existingTag && existingTag.id !== tagId) {
-    return { success: false, error: "Tag already exists" };
+    return { duplicate: tagName };
   }
 
+  // 更新標籤
   const updatedTag = await prisma.ytmusic_tags.update({
     where: { id: tagId },
     data: {
@@ -369,20 +354,20 @@ export async function updateTag(tagId: number, tagName: string) {
     },
   });
 
-  return { success: true, data: { id: updatedTag.id, name: updatedTag.tag_name } };
+  return { updated: { id: updatedTag.id, name: updatedTag.tag_name } };
 }
 
-// 批量刪除標籤 (軟刪除)
+// 批量刪除標籤 (棄用)
 export async function deleteTags(tagIds: number[]) {
   const updatedDate = new Date();
 
   return await prisma.$transaction(async (tx) => {
-    // 1. Remove relations from tracks
+    // 1. 刪除歌曲與標籤的關聯
     await tx.ytmusic_track_tags.deleteMany({
       where: { tag_id: { in: tagIds } },
     });
 
-    // 2. Mark tags as deprecated
+    // 2. 將標籤標記為已棄用
     await tx.ytmusic_tags.updateMany({
       where: { id: { in: tagIds } },
       data: {
@@ -390,7 +375,5 @@ export async function deleteTags(tagIds: number[]) {
         updated_at: updatedDate,
       },
     });
-
-    return { success: true };
   });
 }

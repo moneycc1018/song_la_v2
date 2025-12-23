@@ -45,7 +45,7 @@ function UpdateTagButton(props: UpdateTagButtonProps) {
 
   function handleUpdate() {
     if (!tagName.trim()) {
-      toast("warning", "Please enter a tag name.");
+      toast("warning", t("tag.message.message1"));
       return;
     }
 
@@ -63,7 +63,11 @@ function UpdateTagButton(props: UpdateTagButtonProps) {
           setOpen(false);
           onSuccess();
         } else {
-          toast("error", result.error);
+          if (result.duplicate && result.duplicate !== "") {
+            toast("warning", `${t("tag.message.duplicateTag")} ${result.duplicate}`);
+          } else {
+            toast("error", result.error);
+          }
         }
       } catch (error) {
         console.error(error);
@@ -89,7 +93,12 @@ function UpdateTagButton(props: UpdateTagButtonProps) {
           <Label htmlFor="name" className="whitespace-nowrap">
             {t("tag.label.tagName")}
           </Label>
-          <Input id="name" value={tagName} onChange={(e) => setTagName(e.target.value)} placeholder="Tag Name" />
+          <Input
+            id="name"
+            value={tagName}
+            onChange={(e) => setTagName(e.target.value)}
+            placeholder={t("tag.label.placeholder")}
+          />
         </div>
         <DialogFooter>
           <Button variant="outline" className="cursor-pointer" onClick={handleUpdate} disabled={isPending}>

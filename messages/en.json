@@ -86,7 +86,8 @@
         "trackCountColumn": "Track Count"
       },
       "label": {
-        "tagName": "Name"
+        "tagName": "Name",
+        "placeholder": "Tag Name"
       },
       "title": {
         "add": "Add New Tag",
@@ -102,7 +103,9 @@
         "addTagSuccess": "Tag added successfully!",
         "unexpectedError": "An unexpected error occurred.",
         "deleteTagsSuccess": "Tags deleted successfully!",
-        "updateTagSuccess": "Tag updated successfully!"
+        "updateTagSuccess": "Tag updated successfully!",
+        "duplicateTag": "Duplicate tags found:",
+        "message1": "Please enter a tag name."
       }
     }
   }
