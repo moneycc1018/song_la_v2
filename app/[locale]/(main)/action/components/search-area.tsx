@@ -77,7 +77,7 @@ function SearchArea() {
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-center gap-2">
         <Input
-          className="max-w-60"
+          className="max-w-60 shadow-[0_0_2px]"
           placeholder={t("placeholder")}
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
@@ -91,10 +91,10 @@ function SearchArea() {
             setInputValue("");
           }}
         >
-          <SelectTrigger className="w-40 min-w-32 cursor-pointer">
+          <SelectTrigger className="w-40 min-w-32 cursor-pointer shadow-[0_0_2px]">
             <SelectValue />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent className="shadow-[0_0_2px]">
             <SelectItem value="yt" className="cursor-pointer">
               {t("ytmusic")}
             </SelectItem>

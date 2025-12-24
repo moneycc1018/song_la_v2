@@ -16,6 +16,8 @@
     "start": "Start",
     "next": "Next",
     "answer": "Answer",
+    "pause": "Pause",
+    "play": "Play",
     "artist": {
       "title": "Select Artists",
       "placeholder": "Artist Name",

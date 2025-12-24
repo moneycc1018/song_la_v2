@@ -95,7 +95,7 @@ function GameArea(props: QuestionAreaProps) {
               <span className="text-muted-foreground animate-pulse text-xs">{t("playing")}</span>
             </div>
           ) : (
-            <span className="text-muted-foreground">{currentTrack ? "Paused" : ""}</span>
+            <span className="text-muted-foreground">{currentTrack ? t("pause") : ""}</span>
           )}
         </div>
         {showAnswer && currentTrack && (
@@ -110,7 +110,7 @@ function GameArea(props: QuestionAreaProps) {
         {currentTrack ? (
           <Button variant="outline" className="w-28 cursor-pointer" onClick={togglePlay}>
             {isPlaying ? <PauseIcon /> : <PlayIcon />}
-            <span>{isPlaying ? "Pause" : "Play"}</span>
+            <span>{isPlaying ? t("pause") : t("play")}</span>
           </Button>
         ) : (
           <Button variant="outline" className="w-28 cursor-pointer" onClick={handleNext}>

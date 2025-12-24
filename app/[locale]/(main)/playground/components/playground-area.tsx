@@ -13,7 +13,13 @@ import { GameArea } from "./game-area";
 import { SelectArtistsCard } from "./select-artists-card";
 import { SelectTagsCard } from "./select-tags-card";
 
-function PlaygroundArea() {
+interface PlaygroundAreaProps {
+  artistData: ArtistType[];
+  tagData: TagType[];
+}
+
+function PlaygroundArea(props: PlaygroundAreaProps) {
+  const { artistData, tagData } = props;
   const [selectedArtists, setSelectedArtists] = useState<ArtistType[]>([]);
   const [selectedTags, setSelectedTags] = useState<TagType[]>([]);
   const [playlist, setPlaylist] = useState<TrackType[]>([]);
@@ -30,7 +36,7 @@ function PlaygroundArea() {
     setPlayedIds(new Set());
   }, [selectedArtists, selectedTags]);
 
-  // 根據所選歌手取得歌曲
+  // 根據所選歌手或標籤取得歌曲
   const { refetch, isFetching } = useQuery({
     queryKey: ["game-tracks", artistIdsString, tagIdsString],
     queryFn: async () => {
@@ -118,14 +124,28 @@ function PlaygroundArea() {
     }
   };
 
+  const totalTrackCount = playlist.length + playedIds.size;
+
   return (
     <div className="flex flex-col gap-4">
+      {isFetching ? (
+        <span className="text-muted-foreground text-center text-sm">{t("loadingTracks")}</span>
+      ) : totalTrackCount > 0 ? (
+        <span className="text-muted-foreground text-center text-sm">
+          {playedIds.size}/{totalTrackCount}
+        </span>
+      ) : (
+        <span className="h-5"></span>
+      )}
       <GameArea currentTrack={currentTrack} onNext={handleNextTrack} />
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-        <SelectArtistsCard selectedArtists={selectedArtists} setSelectedArtists={setSelectedArtists} />
-        <SelectTagsCard selectedTags={selectedTags} setSelectedTags={setSelectedTags} />
+        <SelectArtistsCard
+          artistData={artistData}
+          selectedArtists={selectedArtists}
+          setSelectedArtists={setSelectedArtists}
+        />
+        <SelectTagsCard tagData={tagData} selectedTags={selectedTags} setSelectedTags={setSelectedTags} />
       </div>
-      {isFetching && <div className="text-muted-foreground text-center text-sm">{t("loadingTracks")}</div>}
     </div>
   );
 }

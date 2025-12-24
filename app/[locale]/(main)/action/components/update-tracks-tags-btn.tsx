@@ -50,7 +50,7 @@ function UpdateTracksTagsButton(props: UpdateTracksTagsButtonProps) {
 
       const result = await response.json();
 
-      return result;
+      return result.filter((tag: TagType) => !tag.deprecated);
     },
     enabled: open,
   });
@@ -98,7 +98,7 @@ function UpdateTracksTagsButton(props: UpdateTracksTagsButtonProps) {
           <span>{t("track.title.manageTags")}</span>
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-80">
+      <DialogContent className="sm:max-w-xl">
         <DialogHeader>
           <DialogTitle>{t("track.title.manageTags")}</DialogTitle>
           <DialogDescription>{t("track.description.manageTags")}</DialogDescription>

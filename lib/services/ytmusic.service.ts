@@ -162,7 +162,7 @@ export async function getTracks(query?: string) {
   return tracks.map(mapDbToTrackData);
 }
 
-// 篩選歌曲(by artistIds, tagIds)
+// 查詢歌曲(by artistIds, tagIds)
 export async function getGameTracks(artistIds: string[], tagIds: number[]) {
   const andConditions: any[] = [];
 

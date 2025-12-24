@@ -16,6 +16,8 @@
     "start": "開始",
     "next": "下一首",
     "answer": "解答",
+    "pause": "暫停",
+    "play": "播放",
     "artist": {
       "title": "選擇歌手",
       "placeholder": "歌手名",
