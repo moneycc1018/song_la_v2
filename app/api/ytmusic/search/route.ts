@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { SearchDataType } from "@/types/ytmusic.type";
 
-import { getYoutubeClient } from "@/lib/youtube";
+import { youtube } from "@/lib/youtube";
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
@@ -14,8 +14,6 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const youtube = await getYoutubeClient();
-
     const result = await youtube.music.search(query, { type: "song" });
     const shelf = result.contents?.[0];
 
@@ -23,9 +21,13 @@ export async function GET(request: NextRequest) {
       return NextResponse.json([]);
     }
 
-    const songs = shelf.contents.slice(0, 10);
+    const songs = shelf.contents.filter((song: any) => !!song.id).slice(0, 10);
 
-    const enrichedSongs: SearchDataType[] = await Promise.all(
+    if (songs.length === 0) {
+      return NextResponse.json([]);
+    }
+
+    const responseData: SearchDataType[] = await Promise.all(
       songs.map(async (song: any) => {
         // Basic Info
         const basicData = {
@@ -67,8 +69,8 @@ export async function GET(request: NextRequest) {
 
         if (albumData) {
           const subtitleRuns = albumData.header?.subtitle?.runs || [];
-          const yearStr = subtitleRuns.find((run: any) => /^\d{4}$/.test(run.text))?.text;
-          if (yearStr) release_year = parseInt(yearStr, 10);
+          const yearStr = subtitleRuns.find((run: any) => /^\d{4}年?$/.test(run.text))?.text;
+          if (yearStr) release_year = parseInt(yearStr.replace("年", ""), 10);
 
           if (albumData.header?.title?.text) {
             album_name = albumData.header.title.text;
@@ -97,7 +99,7 @@ export async function GET(request: NextRequest) {
       }),
     );
 
-    return NextResponse.json(enrichedSongs);
+    return NextResponse.json(responseData);
   } catch (error) {
     console.error("YouTube API Error:", error);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });

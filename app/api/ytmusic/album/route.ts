@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { getYoutubeClient } from "@/lib/youtube";
+import { youtube } from "@/lib/youtube";
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
@@ -11,8 +11,6 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const youtube = await getYoutubeClient();
-
     const result = await youtube.music.getAlbum(albumId);
     const subtitleRuns = result.header?.subtitle?.runs || [];
     const year = subtitleRuns.find((run) => /^\d{4}$/.test(run.text))?.text;

@@ -48,11 +48,21 @@ function SearchArea() {
     queryKey: [`search-${searchType}`, searchValue],
     queryFn: async () => {
       let endpoint = "";
-      if (searchType === "yt") endpoint = "/api/ytmusic/search";
-      else if (searchType === "db_track") endpoint = "/api/ytmusic/tracks";
+      let query = searchValue;
+      let isDirectTrackSearch = false;
+
+      if (searchType === "yt") {
+        if (searchValue.startsWith("$")) {
+          endpoint = "/api/ytmusic/track";
+          query = searchValue.substring(1);
+          isDirectTrackSearch = true;
+        } else {
+          endpoint = "/api/ytmusic/search";
+        }
+      } else if (searchType === "db_track") endpoint = "/api/ytmusic/tracks";
       else if (searchType === "db_tag") endpoint = "/api/ytmusic/tags";
 
-      const response = await fetch(`${endpoint}?q=${searchValue}`);
+      const response = await fetch(`${endpoint}?q=${query}`);
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -60,6 +70,10 @@ function SearchArea() {
       }
 
       const result = await response.json();
+
+      if (isDirectTrackSearch) {
+        return [result];
+      }
 
       return result;
     },
@@ -73,6 +87,11 @@ function SearchArea() {
 
   const isTagMode = searchType === "db_tag";
 
+  function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.nativeEvent.isComposing) return;
+    if (e.key === "Enter") handleSearch();
+  }
+
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-center gap-2">
@@ -81,6 +100,7 @@ function SearchArea() {
           placeholder={t("placeholder")}
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
+          onKeyDown={handleKeyDown}
         />
         <Select
           defaultValue="yt"

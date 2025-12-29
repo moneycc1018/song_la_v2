@@ -24,10 +24,12 @@ const mapDbToTrackData = (dbTrack: any): TrackType => {
       name: dbTrack.album_name,
     },
     release_year: dbTrack.release_year ?? undefined,
-    tags: dbTrack.ytmusic_track_tags.map((tt: any) => ({
-      id: tt.ytmusic_tags.id,
-      name: tt.ytmusic_tags.tag_name,
-    })),
+    tags: dbTrack.ytmusic_track_tags
+      .map((tt: any) => ({
+        id: tt.ytmusic_tags.id,
+        name: tt.ytmusic_tags.tag_name,
+      }))
+      .sort((t1: any, t2: any) => t1.id - t2.id),
     lyrics: dbTrack.lyrics ?? undefined,
   };
 };
