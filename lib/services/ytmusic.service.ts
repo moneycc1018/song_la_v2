@@ -78,8 +78,8 @@ export async function createTracks(
           data: {
             video_id: data.video_id,
             track_name: data.track_name,
-            album_id: data.album.id,
-            album_name: data.album.name,
+            album_id: data.album?.id || "",
+            album_name: data.album?.name || "",
             release_year: data.release_year,
             lyrics: data.lyrics,
             // 3. 新增歌手與歌曲的關聯
