@@ -17,6 +17,8 @@ export async function GET(request: NextRequest) {
     const upNextTab = await result.getUpNext();
     const currentItem = upNextTab.contents?.find((item: any) => item.video_id === basic.id) as any;
 
+    console.log(currentItem);
+
     // Construct basic artists list
     const basicArtists = currentItem?.artists?.map((artist: any) => ({
       id: artist.channel_id,

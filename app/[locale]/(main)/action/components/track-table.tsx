@@ -118,7 +118,7 @@ function TrackTable(props: TrackTableProps) {
                         />
                       </TableCell>
                       <TableCell className="truncate">{track.track_name}</TableCell>
-                      <TableCell className="truncate">{track.album.name}</TableCell>
+                      <TableCell className="truncate">{track.album?.name}</TableCell>
                       <TableCell className="truncate">
                         {track.artists.map((artist) => artist.name).join(", ")}
                       </TableCell>

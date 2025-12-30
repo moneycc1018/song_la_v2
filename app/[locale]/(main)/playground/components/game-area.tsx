@@ -102,7 +102,7 @@ function GameArea(props: QuestionAreaProps) {
           <div className="bg-background absolute inset-0 flex flex-col items-center justify-center gap-1 rounded-lg p-4 text-center">
             <p className="text-xl font-bold">{currentTrack.track_name}</p>
             <p className="text-muted-foreground *:text-sm">{currentTrack.artists.map((a) => a.name).join(", ")}</p>
-            <p className="text-muted-foreground text-sm">{currentTrack.album.name}</p>
+            <p className="text-muted-foreground text-sm">{currentTrack.album?.name}</p>
           </div>
         )}
       </div>
