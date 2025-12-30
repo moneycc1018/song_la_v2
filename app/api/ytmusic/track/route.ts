@@ -14,11 +14,13 @@ export async function GET(request: NextRequest) {
   try {
     const result = await youtube.music.getInfo(videoId);
     const basic = result.basic_info;
+
+    if (!basic.id) {
+      return NextResponse.json({ error: "Track data not found" }, { status: 404 });
+    }
+
     const upNextTab = await result.getUpNext();
     const currentItem = upNextTab.contents?.find((item: any) => item.video_id === basic.id) as any;
-
-    console.log("result:", result);
-    console.log("upNextTab:", upNextTab);
 
     // Construct basic artists list
     const basicArtists = currentItem?.artists?.map((artist: any) => ({
@@ -37,7 +39,7 @@ export async function GET(request: NextRequest) {
           id: currentItem.album.id,
           name: currentItem.album.name,
         }
-      : null;
+      : { id: "", name: "" };
 
     // Parallel Fetching: Lyrics, Album, Artists
     const [lyricsData, albumData, ...artistsData] = await Promise.all([
@@ -45,7 +47,7 @@ export async function GET(request: NextRequest) {
       videoId ? youtube.music.getLyrics(videoId).catch(() => null) : Promise.resolve(null),
 
       // 2. Get Album (for Release Year and better name)
-      basicAlbum?.id ? youtube.music.getAlbum(basicAlbum.id).catch(() => null) : Promise.resolve(null),
+      basicAlbum.id ? youtube.music.getAlbum(basicAlbum.id).catch(() => null) : Promise.resolve(null),
 
       // 3. Get Artists (for Unified Name)
       ...(basicArtists.map((artist: any) =>
@@ -63,7 +65,7 @@ export async function GET(request: NextRequest) {
       if (!isNaN(y)) release_year = y;
     }
 
-    let album_name = basicAlbum?.name;
+    let album_name = basicAlbum.name;
 
     if (albumData) {
       const subtitleRuns = albumData.header?.subtitle?.runs || [];
@@ -88,12 +90,10 @@ export async function GET(request: NextRequest) {
       video_id: basic.id,
       track_name: currentItem?.title?.text || basic.title,
       artists: enrichedArtists,
-      album: basicAlbum
-        ? {
-            id: basicAlbum.id,
-            name: album_name,
-          }
-        : null,
+      album: {
+        id: basicAlbum.id,
+        name: album_name,
+      },
       duration: currentItem?.duration ? parseInt(currentItem.duration.seconds) : basic.duration,
       thumbnail: basic.thumbnail?.[0]?.url,
       release_year,

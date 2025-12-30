@@ -8,7 +8,7 @@ export interface SearchDataType {
   album: {
     id: string;
     name: string;
-  } | null;
+  };
   duration?: number;
   thumbnail?: string;
   release_year?: number;
