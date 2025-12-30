@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { TrackType } from "@/types/ytmusic.type";
 
-import { prisma } from "@/lib/prisma";
+import prisma from "@/lib/prisma";
 
 export type CreateTrackInput = TrackType;
 

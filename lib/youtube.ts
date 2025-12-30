@@ -1,5 +1,7 @@
 import { Innertube } from "youtubei.js";
 
+const globalForYoutube = global as unknown as { youtube: Innertube };
+
 async function youtubeClientSingleton() {
   return await Innertube.create({
     lang: "zh-TW",
@@ -8,8 +10,8 @@ async function youtubeClientSingleton() {
   });
 }
 
-const globalForYoutube = global as unknown as { youtube: Innertube };
-
-export const youtube = globalForYoutube.youtube ?? (await youtubeClientSingleton());
+const youtube = globalForYoutube.youtube || (await youtubeClientSingleton());
 
 if (process.env.NODE_ENV !== "production") globalForYoutube.youtube = youtube;
+
+export default youtube;

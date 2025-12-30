@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { SearchDataType } from "@/types/ytmusic.type";
 
-import { youtube } from "@/lib/youtube";
+import youtube from "@/lib/youtube";
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
