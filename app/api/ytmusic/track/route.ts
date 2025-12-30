@@ -15,7 +15,7 @@ export async function GET(request: NextRequest) {
     const result = await youtube.music.getInfo(videoId);
     const basic = result.basic_info;
     const upNextTab = await result.getUpNext();
-    const currentItem = upNextTab.contents[0] as any;
+    const currentItem = upNextTab.contents?.find((item: any) => item.video_id === basic.id) as any;
 
     // Construct basic artists list
     const basicArtists = currentItem?.artists?.map((artist: any) => ({
