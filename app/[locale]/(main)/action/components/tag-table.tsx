@@ -123,7 +123,7 @@ function TagTable(props: TagTableProps) {
               </>
             ) : (
               <TableRow>
-                <TableCell colSpan={2} className="h-24 text-center">
+                <TableCell colSpan={4} className="h-24 text-center">
                   {t("table.noData")}
                 </TableCell>
               </TableRow>

@@ -143,6 +143,15 @@ export async function getTracks(query?: string) {
               },
             },
           },
+          {
+            ytmusic_track_tags: {
+              some: {
+                ytmusic_tags: {
+                  tag_name: { contains: query, mode: "insensitive" as const },
+                },
+              },
+            },
+          },
         ],
       }
     : {};
@@ -291,7 +300,13 @@ export async function getAllUniqueArtists() {
 }
 
 // 查詢標籤
-export async function getAllTags() {
+export async function getTags(query?: string) {
+  const whereClause = query
+    ? {
+        tag_name: { contains: query, mode: "insensitive" as const },
+      }
+    : {};
+
   const tags = await prisma.ytmusic_tags.findMany({
     select: {
       id: true,
@@ -303,6 +318,7 @@ export async function getAllTags() {
         },
       },
     },
+    where: whereClause,
     orderBy: [{ deprecated: "asc" }, { tag_name: "asc" }],
   });
 

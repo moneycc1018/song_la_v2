@@ -4,7 +4,7 @@ import { PlaygroundArea } from "./components/playground-area";
 
 export default async function PlaygroundPage() {
   const artistData = await ytmusicService.getAllUniqueArtists();
-  const tagData = await ytmusicService.getAllTags();
+  const tagData = await ytmusicService.getTags();
 
   return <PlaygroundArea artistData={artistData} tagData={tagData} />;
 }
