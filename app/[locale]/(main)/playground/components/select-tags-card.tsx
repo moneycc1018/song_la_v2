@@ -66,9 +66,9 @@ function SelectTagsCard(props: SelectTagsCardProps) {
         </AccordionTrigger>
         <AccordionContent className="flex flex-col gap-1 px-4 pb-4">
           <div className="flex flex-col gap-2 md:flex-row">
-            <div className="bg-background border-foreground flex h-9 w-full items-center gap-2 rounded-md border shadow-[0_0_2px]">
+            <div className="bg-background border-foreground flex h-9 w-full items-center gap-1 rounded-md border shadow-[0_0_2px]">
               <Input
-                className="border-0 focus-visible:ring-0"
+                className="border-0 pr-1 focus-visible:ring-0"
                 placeholder={t("placeholder")}
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
