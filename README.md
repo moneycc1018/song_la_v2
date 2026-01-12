@@ -1,36 +1,46 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Song La v2
 
-## Getting Started
+A music discovery and quiz application built with Next.js, allowing users to play a guessing game.
 
-First, run the development server:
+## 🚀 Tech Stack
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Framework:** [Next.js 15](https://nextjs.org/) (App Router)
+- **Language:** TypeScript
+- **Database:** PostgreSQL
+- **ORM:** [Prisma](https://www.prisma.io/)
+- **Authentication:** [NextAuth.js](https://next-auth.js.org/) (Google Provider)
+- **Styling:** Tailwind CSS & Shadcn UI
+- **Testing:** Playwright
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🎮 Features Guide
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 🔐 Login
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+You can access the application in two ways:
 
-## Learn More
+1. **Google Sign-In:** Click the Google button to authenticate with your account and access personalized features.
+2. **Guest Mode:** Click the "Login as Guest" button to directly enter the Playground and explore with existing library data.
 
-To learn more about Next.js, take a look at the following resources:
+### 🎧 Playground
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The Playground is the central hub for testing your music knowledge.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+#### **Setting Up a Session**
 
-## Deploy on Vercel
+Before starting, you can filter the pool of songs:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **Select Artists:** Filter by specific artists in the library.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Select Tags:** Filter tracks by existing categories.
+
+- **Select/Remove All:** Quickly toggle all available filters.
+
+> Note: You must select at least one artist or tag to start.
+
+#### **Playing the Game**
+
+1. Click the **"Start"** button to begin the session.
+2. The game will fetch tracks matching your criteria.
+3. **Guess the Song:** Listen or recall the track.
+4. **Reveal Answer:** Click **"Answer"** to show the Track Name, Album, and other details.
+5. **Next Track:** Click **"Next"** to proceed to the next song in the queue.
