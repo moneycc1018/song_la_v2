@@ -1,13 +1,15 @@
 "use server";
 
-import { getServerSession } from "next-auth";
+import { headers } from "next/headers";
 
-import { authOptions } from "@/lib/auth";
+import { auth } from "@/lib/auth";
 import * as ytmusicService from "@/lib/services/ytmusic.service";
 import { CreateTrackInput, UpdateTrackTagsInput } from "@/lib/services/ytmusic.service";
 
 async function checkAdmin() {
-  const session = await getServerSession(authOptions);
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
   const userEmail = session?.user?.email;
   const adminEmail = process.env.ADMIN_EMAIL;
 

@@ -10,10 +10,9 @@ import { Toaster } from "@/components/ui/sonner";
 import "@/styles/globals.css";
 
 import { routing } from "@/i18n/routing";
-import NextAuthProvider from "@/providers/next-auth-provider";
 import NextIntlProvider from "@/providers/next-intl-provider";
 import ReactQueryProvider from "@/providers/react-query-provider";
-import { NextThemesProvider } from "@/providers/theme-provider";
+import NextThemesProvider from "@/providers/theme-provider";
 
 const roboto = Roboto({
   weight: ["100", "300", "400", "500", "700", "900"],
@@ -52,12 +51,10 @@ export default async function LocaleLayout({
       <body className={`${roboto.variable} ${raleway.variable} antialiased`}>
         <NextThemesProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <NextIntlProvider locale={locale} messages={messages}>
-            <NextAuthProvider>
-              <ReactQueryProvider>
-                <Toaster />
-                {children}
-              </ReactQueryProvider>
-            </NextAuthProvider>
+            <ReactQueryProvider>
+              <Toaster />
+              {children}
+            </ReactQueryProvider>
           </NextIntlProvider>
         </NextThemesProvider>
       </body>

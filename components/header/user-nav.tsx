@@ -1,7 +1,6 @@
 "use client";
 
 import { LogOutIcon } from "lucide-react";
-import { signOut, useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -14,11 +13,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import { Link } from "@/i18n/navigation";
+import { Link, useRouter } from "@/i18n/navigation";
+import { authClient } from "@/lib/auth-client";
 
 export function UserNav() {
-  const { data: session } = useSession();
+  const { data: session } = authClient.useSession();
   const t = useTranslations("header");
+  const router = useRouter();
 
   if (!session) {
     return (
@@ -49,7 +50,10 @@ export function UserNav() {
         <DropdownMenuItem asChild>
           <button
             className="flex w-full cursor-pointer items-center gap-2"
-            onClick={() => signOut({ callbackUrl: "/login" })}
+            onClick={async () => {
+              await authClient.signOut();
+              router.push("/login");
+            }}
           >
             <LogOutIcon />
             <span>{t("logoutVerb")}</span>

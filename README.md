@@ -8,7 +8,7 @@ A music discovery and quiz application built with Next.js, allowing users to pla
 - **Language:** TypeScript
 - **Database:** PostgreSQL
 - **ORM:** [Prisma](https://www.prisma.io/)
-- **Authentication:** [NextAuth.js](https://next-auth.js.org/) (Google Provider)
+- **Authentication:** [Better-Auth](https://better-auth.com/) (Google Provider)
 - **Styling:** Tailwind CSS & Shadcn UI
 - **Testing:** Playwright
 

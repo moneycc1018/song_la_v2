@@ -1,6 +1,6 @@
-import { getServerSession } from "next-auth";
+import { headers } from "next/headers";
 
-import { authOptions } from "@/lib/auth";
+import { auth } from "@/lib/auth";
 
 import { LocaleSwitch } from "./locale-switch";
 import { Navbar } from "./navbar";
@@ -8,7 +8,9 @@ import { ThemeSwitch } from "./theme-switch";
 import { UserNav } from "./user-nav";
 
 async function Header() {
-  const session = await getServerSession(authOptions);
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
   const isAdmin = session?.user?.email === process.env.ADMIN_EMAIL;
 
   return (

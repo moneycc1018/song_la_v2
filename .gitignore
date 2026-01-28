@@ -43,7 +43,7 @@ next-env.d.ts
 /.vscode/
 .env*.local
 
-/lib/generated/prisma
+/prisma/generated
 
 # Playwright
 node_modules/

@@ -1,6 +1,5 @@
 "use client";
 
-import { signIn } from "next-auth/react";
 import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
 
@@ -8,13 +7,17 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 import { Link } from "@/i18n/navigation";
+import { authClient } from "@/lib/auth-client";
 
 function LoginCard() {
   const locale = useLocale();
   const t = useTranslations("login");
 
-  const handleGoogleLogin = () => {
-    signIn("google", { callbackUrl: `/${locale}/playground` });
+  const handleGoogleLogin = async () => {
+    await authClient.signIn.social({
+      provider: "google",
+      callbackURL: `/${locale}/playground`,
+    });
   };
 
   return (

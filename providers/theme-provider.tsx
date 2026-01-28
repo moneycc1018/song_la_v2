@@ -4,6 +4,6 @@ import * as React from "react";
 
 import { ThemeProvider } from "next-themes";
 
-export function NextThemesProvider({ children, ...props }: React.ComponentProps<typeof ThemeProvider>) {
+export default function NextThemesProvider({ children, ...props }: React.ComponentProps<typeof ThemeProvider>) {
   return <ThemeProvider {...props}>{children}</ThemeProvider>;
 }
