@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { hasLocale } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { Raleway, Roboto } from "next/font/google";
+import { headers } from "next/headers";
 import { notFound } from "next/navigation";
 
 import { Toaster } from "@/components/ui/sonner";
@@ -45,11 +46,18 @@ export default async function LocaleLayout({
   }
 
   const messages = await getMessages();
+  const nonce = (await headers()).get("x-nonce") ?? undefined;
 
   return (
     <html lang={locale} suppressHydrationWarning>
       <body className={`${roboto.variable} ${raleway.variable} antialiased`}>
-        <NextThemesProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+        <NextThemesProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+          nonce={nonce}
+        >
           <NextIntlProvider locale={locale} messages={messages}>
             <ReactQueryProvider>
               <Toaster />
